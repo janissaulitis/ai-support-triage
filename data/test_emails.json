@@ -1,0 +1,866 @@
+[
+ {
+  "id": "E001",
+  "lang": "lv",
+  "text": "Labdien! Kur var redzēt, cik man jāmaksā šomēnes un līdz kuram datumam? Līguma nr. L-20481.",
+  "topic": "repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E002",
+  "lang": "lv",
+  "text": "Samaksāju 15. datumā 86,40 EUR, bet jūsu sistēmā maksājums joprojām nav redzams un atnāca atgādinājums. Lūdzu pārbaudiet.",
+  "topic": "repayment",
+  "urgency": "medium",
+  "team": "Customer care",
+  "note": "payment missing"
+ },
+ {
+  "id": "E003",
+  "lang": "lv",
+  "text": "Sveiki, vai varu pagarināt aizdevuma termiņu? Maksājums jāveic rīt, bet alga būs tikai nākamnedēļ.",
+  "topic": "extension",
+  "urgency": "high",
+  "team": "Collections",
+  "note": "due tomorrow"
+ },
+ {
+  "id": "E004",
+  "lang": "lv",
+  "text": "Vēlos atlikt nākamā mēneša maksājumu uz 2 nedēļām. Cik tas maksās?",
+  "topic": "extension",
+  "urgency": "medium",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E005",
+  "lang": "lv",
+  "text": "Gribu atmaksāt visu aizdevumu priekšlaicīgi. Kāda ir summa šodien un vai procenti tiks pārrēķināti?",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E006",
+  "lang": "lv",
+  "text": "vai var nomaksat visu uzreiz bez soda naudas? paldies",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": "no diacritics"
+ },
+ {
+  "id": "E007",
+  "lang": "lv",
+  "text": "Vakar iesniedzu pieteikumu aizdevumam. Kad varētu būt atbilde?",
+  "topic": "application_status",
+  "urgency": "low",
+  "team": "Underwriting",
+  "note": ""
+ },
+ {
+  "id": "E008",
+  "lang": "lv",
+  "text": "Jau 5 dienas gaidu lēmumu par savu pieteikumu, nauda vajadzīga auto remontam. Kas notiek?",
+  "topic": "application_status",
+  "urgency": "medium",
+  "team": "Underwriting",
+  "note": "waiting long"
+ },
+ {
+  "id": "E009",
+  "lang": "lv",
+  "text": "Zaudēju darbu un nākamos mēnešus nevarēšu maksāt pilnā apmērā. Ko man darīt? Negribu, lai lieta nonāk pie piedziņas.",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E010",
+  "lang": "lv",
+  "text": "Esmu slimnīcā un nevaru veikt maksājumu. Lūdzu, nepiezvaniet maniem radiniekiem.",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": "health"
+ },
+ {
+  "id": "E011",
+  "lang": "lv",
+  "text": "Jūsu operators pa telefonu bija rupjš un nolika klausuli. Gribu iesniegt sūdzību.",
+  "topic": "complaint",
+  "urgency": "medium",
+  "team": "Complaints",
+  "note": ""
+ },
+ {
+  "id": "E012",
+  "lang": "lv",
+  "text": "Jūs man piedzināt divreiz par vienu un to pašu maksājumu. Ja nauda netiks atgriezta 3 dienu laikā, rakstīšu PTAC.",
+  "topic": "complaint",
+  "urgency": "high",
+  "team": "Complaints",
+  "note": "regulator threat; double charge"
+ },
+ {
+  "id": "E013",
+  "lang": "lv",
+  "text": "Saskaņā ar VDAR lūdzu dzēst visus manus personas datus no jūsu sistēmām.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": ""
+ },
+ {
+  "id": "E014",
+  "lang": "lv",
+  "text": "Lūdzu atsūtīt kopiju visiem datiem, ko par mani glabājat, ieskaitot zvanu ierakstus.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": ""
+ },
+ {
+  "id": "E015",
+  "lang": "lv",
+  "text": "Saņēmu atgādinājumu par aizdevumu, kuru es NEKAD neesmu ņēmis. Kāds ir izmantojis manus datus!",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": ""
+ },
+ {
+  "id": "E016",
+  "lang": "lv",
+  "text": "Man nozaga telefonu ar bankas lietotni, un šodien jūsu kontā redzu jaunu aizdevumu.",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": ""
+ },
+ {
+  "id": "E017",
+  "lang": "lt",
+  "text": "Laba diena, kokia sąskaita turiu mokėti įmoką? Sutarties nr. L-31877.",
+  "topic": "repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E018",
+  "lang": "lt",
+  "text": "Sumokėjau įmoką prieš 4 dienas, bet jūs vis tiek siunčiate priminimus. Prašau patikrinti.",
+  "topic": "repayment",
+  "urgency": "medium",
+  "team": "Customer care",
+  "note": "payment missing"
+ },
+ {
+  "id": "E019",
+  "lang": "lt",
+  "text": "Ar galiu atidėti šio mėnesio įmoką vienai savaitei?",
+  "topic": "extension",
+  "urgency": "medium",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E020",
+  "lang": "lt",
+  "text": "Įmoka turi būti sumokėta šiandien, bet negaliu. Ar galima pratęsti terminą?",
+  "topic": "extension",
+  "urgency": "high",
+  "team": "Collections",
+  "note": "due today"
+ },
+ {
+  "id": "E021",
+  "lang": "lt",
+  "text": "Norėčiau grąžinti visą paskolą anksčiau. Kokia galutinė suma?",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E022",
+  "lang": "lt",
+  "text": "Ar yra mokestis, jei grąžinu paskolą anksčiau laiko?",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E023",
+  "lang": "lt",
+  "text": "Pateikiau paraišką vakar vakare. Kada gausiu atsakymą?",
+  "topic": "application_status",
+  "urgency": "low",
+  "team": "Underwriting",
+  "note": ""
+ },
+ {
+  "id": "E024",
+  "lang": "lt",
+  "text": "Ar reikia papildomų dokumentų mano paraiškai? Nieko negavau el. paštu.",
+  "topic": "application_status",
+  "urgency": "low",
+  "team": "Underwriting",
+  "note": ""
+ },
+ {
+  "id": "E025",
+  "lang": "lt",
+  "text": "Mano atlyginimas sumažintas perpus, nebegaliu mokėti tokių įmokų. Gal galima sumažinti?",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E026",
+  "lang": "lt",
+  "text": "Esu bedarbis jau mėnesį. Prašau nesiųsti skolos išieškotojams, noriu susitarti.",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E027",
+  "lang": "lt",
+  "text": "Jūsų programėlė nuolat stringa ir negaliu prisijungti jau tris dienas. Labai nepatenkintas.",
+  "topic": "complaint",
+  "urgency": "medium",
+  "team": "Complaints",
+  "note": ""
+ },
+ {
+  "id": "E028",
+  "lang": "lt",
+  "text": "Mano paskolos palūkanos neatitinka sutarties. Kreipsiuosi į Lietuvos banką, jei neištaisysite.",
+  "topic": "complaint",
+  "urgency": "high",
+  "team": "Complaints",
+  "note": "regulator threat"
+ },
+ {
+  "id": "E029",
+  "lang": "lt",
+  "text": "Pagal BDAR prašau ištrinti mano asmens duomenis.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": ""
+ },
+ {
+  "id": "E030",
+  "lang": "lt",
+  "text": "Kam perdavėte mano duomenis? Prašau pateikti sąrašą.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": ""
+ },
+ {
+  "id": "E031",
+  "lang": "lt",
+  "text": "Kažkas pateikė paraišką mano vardu, aš nieko nepateikiau!",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": ""
+ },
+ {
+  "id": "E032",
+  "lang": "lt",
+  "text": "Gavau SMS su nuoroda neva iš jūsų, ten prašė banko kortelės duomenų. Ar tai jūs?",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": "phishing report"
+ },
+ {
+  "id": "E033",
+  "lang": "pl",
+  "text": "Dzień dobry, gdzie znajdę numer konta do spłaty raty?",
+  "topic": "repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E034",
+  "lang": "pl",
+  "text": "Rata została pobrana dwa razy z mojego konta w tym miesiącu. Proszę o wyjaśnienie.",
+  "topic": "repayment",
+  "urgency": "medium",
+  "team": "Customer care",
+  "note": "double charge, polite"
+ },
+ {
+  "id": "E035",
+  "lang": "pl",
+  "text": "Czy mogę przesunąć termin spłaty o 14 dni? Ile to będzie kosztować?",
+  "topic": "extension",
+  "urgency": "medium",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E036",
+  "lang": "pl",
+  "text": "Termin płatności mija jutro, a nie dostałem jeszcze wypłaty. Proszę o przedłużenie.",
+  "topic": "extension",
+  "urgency": "high",
+  "team": "Collections",
+  "note": "due tomorrow"
+ },
+ {
+  "id": "E037",
+  "lang": "pl",
+  "text": "Chciałbym spłacić pożyczkę wcześniej. Jaka jest kwota na dziś?",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E038",
+  "lang": "pl",
+  "text": "Czy przy wcześniejszej spłacie odzyskam część odsetek?",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E039",
+  "lang": "pl",
+  "text": "Złożyłem wniosek godzinę temu, kiedy będzie decyzja?",
+  "topic": "application_status",
+  "urgency": "low",
+  "team": "Underwriting",
+  "note": ""
+ },
+ {
+  "id": "E040",
+  "lang": "pl",
+  "text": "Mój wniosek ma status 'w weryfikacji' od tygodnia. Dlaczego tak długo?",
+  "topic": "application_status",
+  "urgency": "medium",
+  "team": "Underwriting",
+  "note": "waiting long"
+ },
+ {
+  "id": "E041",
+  "lang": "pl",
+  "text": "Straciłem pracę i nie dam rady spłacać rat. Czy jest możliwość rozłożenia długu?",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E042",
+  "lang": "pl",
+  "text": "Mam problemy zdrowotne i komornik już do mnie dzwonił w innej sprawie. Nie dam rady zapłacić w tym miesiącu.",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": "health; mentions bailiff"
+ },
+ {
+  "id": "E043",
+  "lang": "pl",
+  "text": "Składam oficjalną reklamację. Naliczyliście mi opłaty, o których nikt mnie nie informował. Sprawę zgłoszę do Rzecznika Finansowego.",
+  "topic": "complaint",
+  "urgency": "high",
+  "team": "Complaints",
+  "note": "regulator threat"
+ },
+ {
+  "id": "E044",
+  "lang": "pl",
+  "text": "Wasi konsultanci dzwonią do mnie codziennie o 8 rano. To jest nękanie.",
+  "topic": "complaint",
+  "urgency": "medium",
+  "team": "Complaints",
+  "note": ""
+ },
+ {
+  "id": "E045",
+  "lang": "pl",
+  "text": "Na podstawie RODO żądam usunięcia moich danych osobowych.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": ""
+ },
+ {
+  "id": "E046",
+  "lang": "pl",
+  "text": "Proszę o przesłanie kopii moich danych przetwarzanych przez Państwa firmę.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": ""
+ },
+ {
+  "id": "E047",
+  "lang": "pl",
+  "text": "Ktoś wziął pożyczkę na mój PESEL. Zgłosiłem to już na policję.",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": ""
+ },
+ {
+  "id": "E048",
+  "lang": "pl",
+  "text": "Nie rozpoznaję tej pożyczki w moim profilu BIK, nigdy u was nie byłem klientem.",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": ""
+ },
+ {
+  "id": "E049",
+  "lang": "es",
+  "text": "Hola, ¿cómo puedo pagar la cuota con tarjeta desde la app?",
+  "topic": "repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E050",
+  "lang": "es",
+  "text": "Hice la transferencia el lunes y todavía aparece como impagada. Adjunto el justificante.",
+  "topic": "repayment",
+  "urgency": "medium",
+  "team": "Customer care",
+  "note": "payment missing"
+ },
+ {
+  "id": "E051",
+  "lang": "es",
+  "text": "¿Es posible aplazar el pago de este mes? Cobro a final de mes.",
+  "topic": "extension",
+  "urgency": "medium",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E052",
+  "lang": "es",
+  "text": "Hoy vence mi cuota y no llego. ¿Puedo ampliar el plazo unos días?",
+  "topic": "extension",
+  "urgency": "high",
+  "team": "Collections",
+  "note": "due today"
+ },
+ {
+  "id": "E053",
+  "lang": "es",
+  "text": "Quiero cancelar el préstamo por completo. ¿Cuánto debo exactamente?",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E054",
+  "lang": "es",
+  "text": "Buenas, si pago todo antes, ¿me descuentan intereses?",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": "Peru"
+ },
+ {
+  "id": "E055",
+  "lang": "es",
+  "text": "Envié mi solicitud ayer, ¿cuándo recibiré respuesta?",
+  "topic": "application_status",
+  "urgency": "low",
+  "team": "Underwriting",
+  "note": ""
+ },
+ {
+  "id": "E056",
+  "lang": "es",
+  "text": "¿Necesitan algún documento más para aprobar mi solicitud? Me llegó un correo raro.",
+  "topic": "application_status",
+  "urgency": "low",
+  "team": "Underwriting",
+  "note": ""
+ },
+ {
+  "id": "E057",
+  "lang": "es",
+  "text": "Me quedé sin trabajo y no puedo pagar. Por favor, no me llamen más, quiero buscar una solución.",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E058",
+  "lang": "es",
+  "text": "Estoy enfermo y con muchas deudas, no sé cómo voy a pagar esto. Estoy desesperado.",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": "distress"
+ },
+ {
+  "id": "E059",
+  "lang": "es",
+  "text": "Su atención al cliente es pésima, nadie contesta el teléfono.",
+  "topic": "complaint",
+  "urgency": "medium",
+  "team": "Complaints",
+  "note": ""
+ },
+ {
+  "id": "E060",
+  "lang": "es",
+  "text": "Me cobraron una comisión ilegal. Si no la devuelven, presentaré una reclamación ante el Banco de España y mi abogado se pondrá en contacto.",
+  "topic": "complaint",
+  "urgency": "high",
+  "team": "Complaints",
+  "note": "regulator + lawyer"
+ },
+ {
+  "id": "E061",
+  "lang": "es",
+  "text": "Ejerzo mi derecho de supresión según el RGPD. Borren todos mis datos.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": ""
+ },
+ {
+  "id": "E062",
+  "lang": "es",
+  "text": "Solicito acceso a mis datos personales y a la grabación de la llamada del día 3.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": "Peru"
+ },
+ {
+  "id": "E063",
+  "lang": "es",
+  "text": "Alguien ha solicitado un préstamo a mi nombre con mi DNI. Yo no he sido.",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": ""
+ },
+ {
+  "id": "E064",
+  "lang": "es",
+  "text": "Me llamaron diciendo que eran de ustedes y me pidieron el código del SMS. ¿Era real?",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": "social engineering"
+ },
+ {
+  "id": "E065",
+  "lang": "ro",
+  "text": "Bună ziua, în ce cont trebuie să plătesc rata?",
+  "topic": "repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E066",
+  "lang": "ro",
+  "text": "Am plătit rata acum 3 zile, dar în aplicație apare că am restanță.",
+  "topic": "repayment",
+  "urgency": "medium",
+  "team": "Customer care",
+  "note": "payment missing"
+ },
+ {
+  "id": "E067",
+  "lang": "ro",
+  "text": "Pot amâna plata ratei cu două săptămâni?",
+  "topic": "extension",
+  "urgency": "medium",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E068",
+  "lang": "ro",
+  "text": "Scadența este mâine și nu am banii. Se poate prelungi termenul?",
+  "topic": "extension",
+  "urgency": "high",
+  "team": "Collections",
+  "note": "due tomorrow"
+ },
+ {
+  "id": "E069",
+  "lang": "ro",
+  "text": "Aș dori să achit integral creditul. Care este suma totală?",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E070",
+  "lang": "ro",
+  "text": "Daca platesc mai devreme, se recalculeaza dobanda?",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": "no diacritics"
+ },
+ {
+  "id": "E071",
+  "lang": "ro",
+  "text": "Am trimis cererea ieri. Când primesc un răspuns?",
+  "topic": "application_status",
+  "urgency": "low",
+  "team": "Underwriting",
+  "note": ""
+ },
+ {
+  "id": "E072",
+  "lang": "ro",
+  "text": "Aștept de 6 zile aprobarea și am nevoie urgent de bani pentru chirie.",
+  "topic": "application_status",
+  "urgency": "medium",
+  "team": "Underwriting",
+  "note": "waiting long"
+ },
+ {
+  "id": "E073",
+  "lang": "ro",
+  "text": "Mi-am pierdut locul de muncă și nu mai pot plăti ratele. Ce opțiuni am?",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E074",
+  "lang": "ro",
+  "text": "Sunt în concediu medical și venitul meu a scăzut mult. Vă rog să nu trimiteți datoria la recuperatori.",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E075",
+  "lang": "ro",
+  "text": "Am fost taxat cu un comision pe care nu l-am înțeles. Vreau explicații.",
+  "topic": "complaint",
+  "urgency": "medium",
+  "team": "Complaints",
+  "note": "soft complaint"
+ },
+ {
+  "id": "E076",
+  "lang": "ro",
+  "text": "Voi depune plângere la ANPC și la BNR dacă nu opriți apelurile zilnice.",
+  "topic": "complaint",
+  "urgency": "high",
+  "team": "Complaints",
+  "note": "regulator threat"
+ },
+ {
+  "id": "E077",
+  "lang": "ro",
+  "text": "Conform GDPR, vă solicit ștergerea tuturor datelor mele personale.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": ""
+ },
+ {
+  "id": "E078",
+  "lang": "ro",
+  "text": "Vreau o copie a datelor mele și să știu cui le-ați transmis.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": ""
+ },
+ {
+  "id": "E079",
+  "lang": "ro",
+  "text": "Cineva a luat un credit pe numele meu, eu nu am aplicat niciodată!",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": ""
+ },
+ {
+  "id": "E080",
+  "lang": "ro",
+  "text": "Mi-a fost furată cartea de identitate săptămâna trecută. Vă rog blocați orice cerere pe numele meu.",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": "pre-emptive block"
+ },
+ {
+  "id": "E081",
+  "lang": "en",
+  "text": "Hi, can I change the day of the month my instalment is taken?",
+  "topic": "repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E082",
+  "lang": "en",
+  "text": "My direct debit failed even though there was money in the account. Will I be charged a late fee?",
+  "topic": "repayment",
+  "urgency": "medium",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E083",
+  "lang": "en",
+  "text": "Is it possible to push my next payment back by a week?",
+  "topic": "extension",
+  "urgency": "medium",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E084",
+  "lang": "en",
+  "text": "Payment is due TODAY and my salary is late. Can I get a few days' extension please?",
+  "topic": "extension",
+  "urgency": "high",
+  "team": "Collections",
+  "note": "due today"
+ },
+ {
+  "id": "E085",
+  "lang": "en",
+  "text": "I'd like to pay off the remaining balance. Please send the settlement amount.",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": ""
+ },
+ {
+  "id": "E086",
+  "lang": "en",
+  "text": "Oh great, another fee. Do you also charge me for paying you back early? Just tell me the total.",
+  "topic": "early_repayment",
+  "urgency": "low",
+  "team": "Customer care",
+  "note": "sarcastic tone, but a simple question"
+ },
+ {
+  "id": "E087",
+  "lang": "en",
+  "text": "Just applied, how long does approval usually take?",
+  "topic": "application_status",
+  "urgency": "low",
+  "team": "Underwriting",
+  "note": ""
+ },
+ {
+  "id": "E088",
+  "lang": "en",
+  "text": "My application has been 'pending' for a week and nobody answers. I need to know today.",
+  "topic": "application_status",
+  "urgency": "medium",
+  "team": "Underwriting",
+  "note": "waiting long"
+ },
+ {
+  "id": "E089",
+  "lang": "en",
+  "text": "I was made redundant last month. I want to keep paying but I need a smaller monthly amount.",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E090",
+  "lang": "en",
+  "text": "Going through a divorce and can't cover the payments right now. Please don't pass this to a debt collector.",
+  "topic": "hardship",
+  "urgency": "high",
+  "team": "Collections",
+  "note": ""
+ },
+ {
+  "id": "E091",
+  "lang": "en",
+  "text": "The interest on my statement doesn't match what I was told when I signed. Please explain.",
+  "topic": "complaint",
+  "urgency": "medium",
+  "team": "Complaints",
+  "note": "mild"
+ },
+ {
+  "id": "E092",
+  "lang": "en",
+  "text": "Third email with no answer. I'm forwarding this to the financial ombudsman and posting on social media.",
+  "topic": "complaint",
+  "urgency": "high",
+  "team": "Complaints",
+  "note": "regulator + public"
+ },
+ {
+  "id": "E093",
+  "lang": "en",
+  "text": "Under GDPR I request a copy of all personal data you hold about me.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": ""
+ },
+ {
+  "id": "E094",
+  "lang": "en",
+  "text": "Please stop using my data for marketing and confirm in writing.",
+  "topic": "data_request",
+  "urgency": "medium",
+  "team": "Compliance",
+  "note": ""
+ },
+ {
+  "id": "E095",
+  "lang": "en",
+  "text": "There's a loan on my account I never took out. I think my identity was stolen.",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": ""
+ },
+ {
+  "id": "E096",
+  "lang": "en",
+  "text": "Paid my instalment to the account number in your email, but your support says it's not yours. Was I scammed?",
+  "topic": "fraud",
+  "urgency": "high",
+  "team": "Fraud",
+  "note": "payment to fake account: fraud, not repayment"
+ }
+]
