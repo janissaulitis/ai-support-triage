@@ -22,7 +22,7 @@ with sync_playwright() as p:
     if mode == "test":
       try:
         app.get_by_role("button", name="Sort the inbox").click()
-        app.locator("text=Open an email to see the draft reply, [data-testid=stAlertContentError], [data-testid=stException]").first.wait_for(timeout=240_000)
+        app.locator("text=Open an email to see the draft reply, [data-testid=stAlertContentError], [data-testid=stException]").first.wait_for(timeout=420_000)
         if app.locator("[data-testid=stAlertContentError], [data-testid=stException]").count():
             raise RuntimeError("app error: " + app.locator("[data-testid=stAlertContentError], [data-testid=stException]").first.inner_text()[:800])
         page.wait_for_timeout(2_000)

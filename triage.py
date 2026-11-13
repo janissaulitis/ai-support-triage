@@ -157,12 +157,13 @@ def pick_model(api_key: str, preferred: str = "") -> str:
     return max(flash, key=rank)
 
 
-def triage_ai(emails: list[dict], api_key: str, model: str, batch: int = 8, on_progress=None) -> tuple[list[Result], str]:
+def triage_ai(emails: list[dict], api_key: str, model: str, batch: int = 8, on_progress=None, on_wait=None) -> tuple[list[Result], str]:
     """emails: [{"id", "text"}]. Returns results in the same order, plus the model version used."""
     from google import genai
     from google.genai import types
 
     client = genai.Client(api_key=api_key)
+    think_off = [True]
     out: dict[str, Result] = {}
     used = model
     for start in range(0, len(emails), batch):
@@ -170,25 +171,31 @@ def triage_ai(emails: list[dict], api_key: str, model: str, batch: int = 8, on_p
         payload = json.dumps([{"id": e["id"], "email": e["text"]} for e in chunk], ensure_ascii=False)
         for attempt in range(6):
             try:
+                cfg = dict(system_instruction=SYSTEM, response_mime_type="application/json",
+                           response_schema=SCHEMA, temperature=0)
+                if think_off[0]:
+                    # sorting emails needs no long "thinking": switching it off makes answers much faster
+                    cfg["thinking_config"] = types.ThinkingConfig(thinking_budget=0)
                 resp = client.models.generate_content(
                     model=model,
                     contents=f"Triage these {len(chunk)} emails:\n{payload}",
-                    config=types.GenerateContentConfig(
-                        system_instruction=SYSTEM,
-                        response_mime_type="application/json",
-                        response_schema=SCHEMA,
-                        temperature=0,
-                    ),
+                    config=types.GenerateContentConfig(**cfg),
                 )
                 used = getattr(resp, "model_version", None) or model
                 items = json.loads(resp.text)
                 break
             except Exception as e:  # rate limit or a malformed answer: wait and retry
                 msg = str(e)
-                if attempt == 5:
+                if think_off[0] and "thinking" in msg.lower():
+                    think_off[0] = False  # this model cannot switch thinking off; just retry without
+                    continue
+                if attempt == 5 or "404" in msg or "API_KEY" in msg or "PERMISSION" in msg:
                     raise AIError(msg[:300]) from e
-                wait = 20 if ("429" in msg or "RESOURCE_EXHAUSTED" in msg) else 3
-                time.sleep(wait * (attempt + 1) / 2)
+                limited = "429" in msg or "RESOURCE_EXHAUSTED" in msg
+                wait = (20 if limited else 3) * (attempt + 1) / 2
+                if on_wait:
+                    on_wait(("rate limit" if limited else msg[:120]), attempt + 1, wait)
+                time.sleep(wait)
         texts = {e["id"]: e["text"] for e in chunk}
         for it in items:
             if it.get("id") not in texts:

@@ -41,7 +41,12 @@ def model_name():
 def run_ai(emails_json: str, model: str, version: str):
     """Cached for everyone: the same emails are only sent to the AI once a week."""
     emails = json.loads(emails_json)
-    results, used = T.triage_ai(emails, API_KEY, model)
+    note = st.empty()
+    results, used = T.triage_ai(
+        emails, API_KEY, model,
+        on_progress=lambda done, n: note.caption(f"{done} of {n} emails read…"),
+        on_wait=lambda why, k, w: note.caption(f"Waiting {w:.0f} s ({why}), attempt {k} of 6…"))
+    note.empty()
     return [r.__dict__ for r in results], used
 
 
@@ -96,6 +101,13 @@ def result_cards(emails, results):
             b.success(r.reply)
 
 
+def _model_label():
+    try:
+        return model_name()
+    except Exception as e:
+        return f"model lookup failed: {str(e)[:120]}"
+
+
 # ---------------------------------------------------------------- header
 st.title("AI support inbox for a lender")
 st.markdown("**Reads customer emails in 6 languages, sorts them by topic and urgency, routes them to the right team "
@@ -110,6 +122,7 @@ with st.container(horizontal=True):
             "4. **Try your own email** in any language, or run the **96-email accuracy test**."
         )
 st.caption("Demo for a fictional lender. All emails are invented. Runs on Google Gemini"
+           + (f" ({_model_label()})" if API_KEY else "")
            + ("" if API_KEY else " — **no AI key set, so this copy runs on simple keyword rules**") + ".")
 
 tab_inbox, tab_own, tab_test = st.tabs(["📥 Inbox", "✍️ Try your own email", "🎯 Accuracy test (96 emails)"])
