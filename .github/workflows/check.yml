@@ -1,0 +1,28 @@
+name: Check the live app
+
+on:
+  schedule:
+    - cron: "41 */4 * * *"   # keep it awake: Streamlit sleeps apps after ~12 hours without visitors
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "wake = just wake it, test = also run the 96-email accuracy test"
+        default: wake
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install playwright && python -m playwright install --with-deps chromium
+      - run: python .github/check_app.py ${{ github.event.inputs.mode || 'wake' }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results
+          path: out/
+          if-no-files-found: ignore
