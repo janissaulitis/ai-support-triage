@@ -22,7 +22,8 @@ with sync_playwright() as p:
     if mode == "test":
       try:
         app.get_by_role("button", name="Sort the inbox").click()
-        app.locator("text=Open an email to see the draft reply, [data-testid=stAlertContentError], [data-testid=stException]").first.wait_for(timeout=420_000)
+        err = app.locator("[data-testid=stAlertContentError]").or_(app.locator("[data-testid=stException]"))
+        app.get_by_text("Open an email to see the draft reply").or_(err).first.wait_for(timeout=420_000)
         if app.locator("[data-testid=stAlertContentError], [data-testid=stException]").count():
             raise RuntimeError("app error: " + app.locator("[data-testid=stAlertContentError], [data-testid=stException]").first.inner_text()[:800])
         page.wait_for_timeout(2_000)
@@ -30,7 +31,9 @@ with sync_playwright() as p:
         (out / "1_inbox.txt").write_text(app.locator("[data-testid=stMain]").inner_text())
         app.get_by_role("tab", name="Accuracy test").click()
         app.get_by_role("button", name="Run the test").click()
-        app.locator("text=Where it disagreed, [data-testid=stAlertContentError], [data-testid=stException]").first.wait_for(timeout=600_000)
+        app.get_by_text("Where it disagreed").or_(err).first.wait_for(timeout=900_000)
+        if err.count():
+            raise RuntimeError("app error: " + err.first.inner_text()[:800])
         page.wait_for_timeout(3_000)
         page.screenshot(path=str(out / "2_test.png"), full_page=True)
         (out / "2_test.txt").write_text(app.locator("[data-testid=stMain]").inner_text())
