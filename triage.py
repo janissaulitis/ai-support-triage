@@ -161,7 +161,7 @@ def pick_models(api_key: str, preferred: str = "") -> list[str]:
     return ranked
 
 
-def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 8, on_progress=None, on_wait=None) -> tuple[list[Result], str]:
+def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 12, on_progress=None, on_wait=None) -> tuple[list[Result], str]:
     """models: best first. If one is overloaded (503) the next one takes over."""
     """emails: [{"id", "text"}]. Returns results in the same order, plus the model version used."""
     from google import genai
@@ -195,8 +195,11 @@ def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 
                 if think_off[0] and "thinking" in msg.lower():
                     think_off[0] = False  # this model cannot switch thinking off; just retry without
                     continue
-                if ("503" in msg or "UNAVAILABLE" in msg or "overloaded" in msg) and len(models) > 1:
-                    models.pop(0)  # this model is overloaded right now: move on to the next one
+                busy = "503" in msg or "UNAVAILABLE" in msg or "overloaded" in msg
+                limited_now = "429" in msg or "RESOURCE_EXHAUSTED" in msg
+                if (busy or (limited_now and attempt >= 1)) and len(models) > 1:
+                    # overloaded, or out of this model's free requests: each model has its own limit, so move on
+                    models.pop(0)
                     model = models[0]
                     if on_wait:
                         on_wait(f"model busy, switching to {model}", attempt + 1, 0)
@@ -219,6 +222,8 @@ def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 
             out[r.id] = apply_rules(r, texts[r.id])
         if on_progress:
             on_progress(min(start + batch, len(emails)), len(emails))
+        if start + batch < len(emails):
+            time.sleep(6)  # stay under the free tier's requests-per-minute limit
     missing = [e["id"] for e in emails if e["id"] not in out]
     if missing:
         raise AIError(f"The model skipped {len(missing)} email(s): {', '.join(missing[:5])}")

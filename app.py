@@ -182,7 +182,7 @@ with tab_test:
         st.session_state.test_go = True
     if st.session_state.get("test_go"):
         try:
-            with st.spinner("Sending 96 emails in batches of 8 (about a minute on the free tier)…"):
+            with st.spinner("Sending 96 emails in batches of 12 (one to two minutes on the free tier)…"):
                 res, used = triage(TEST)
         except T.AIError as e:
             st.error(ai_error_text(e))
