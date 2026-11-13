@@ -190,11 +190,11 @@ with tab_test:
         c[2].metric("Right urgency", f"{s['urgency']:.0%}")
         c[3].metric("Missed risk", s["missed_risk"], help="High-risk emails that no person would have seen. Target: 0.")
         st.markdown("**Right team, by language**")
-        st.bar_chart(pd.Series({f"{FLAG[k]} {T.LANGS[k]}": v * 100 for k, v in s["by_lang"].items()}, name="% right"), horizontal=True, height=240)
+        st.bar_chart(pd.Series({f"{FLAG[k]} {T.LANGS[k]}": v * 100 for k, v in s["by_lang"].items()}, name="% right"), horizontal=True, height=240, color="#2fb985")
         misses = [r for r in s["rows"] if not (r["topic_ok"] and r["urgency_ok"])]
         st.markdown(f"**Where it disagreed with the expected answer ({len(misses)})**")
         if misses:
-            st.dataframe(pd.DataFrame(misses)[["id", "lang", "text", "expected", "got", "note"]], hide_index=True, width="stretch")
+            st.table(pd.DataFrame(misses)[["id", "lang", "text", "expected", "got", "note"]].set_index("id"))
         st.caption(f"Model: {used} · prompt {T.PROMPT_VERSION} · results are cached for a week, so repeat runs are instant.")
 
 st.divider()
