@@ -6,6 +6,18 @@ from playwright.sync_api import sync_playwright
 
 URL = "https://ai-inbox-triage.streamlit.app/"
 mode = sys.argv[1] if len(sys.argv) > 1 else "wake"
+
+
+def save_run(app, page, name):
+    """Click the visible "Download this run" button and keep the JSON, if the app offered one (live runs only)."""
+    btn = app.get_by_role("button", name="Download this run (JSON)").locator("visible=true")
+    if not btn.count():
+        print(f"{name}: no live run to save")
+        return
+    with page.expect_download(timeout=60_000) as d:
+        btn.first.click()
+    d.value.save_as(str(out / f"{name}.json"))
+    print(f"{name}: saved")
 out = Path("out"); out.mkdir(exist_ok=True)
 
 with sync_playwright() as p:
@@ -28,6 +40,7 @@ with sync_playwright() as p:
             raise RuntimeError("app error: " + app.locator("[data-testid=stAlertContentError], [data-testid=stException]").first.inner_text()[:800])
         page.wait_for_timeout(2_000)
         page.screenshot(path=str(out / "1_inbox.png"), full_page=True)
+        save_run(app, page, "inbox")
         (out / "1_inbox.txt").write_text(app.locator("[data-testid=stMain]").inner_text())
         app.get_by_role("tab", name="Accuracy test").click()
         app.get_by_role("button", name="Run the test").click()
@@ -36,6 +49,7 @@ with sync_playwright() as p:
             raise RuntimeError("app error: " + err.first.inner_text()[:800])
         page.wait_for_timeout(3_000)
         page.screenshot(path=str(out / "2_test.png"), full_page=True)
+        save_run(app, page, "test")
         (out / "2_test.txt").write_text(app.locator("[data-testid=stMain]").inner_text())
         print("test finished")
       except Exception as e:

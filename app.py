@@ -81,6 +81,36 @@ def triage(emails):
     return [T.Result(**r) for r in rows], used
 
 
+# ---------------------------------------------------------------- saved runs
+# A verified run is kept in data/verified/, so visitors see real results even when the free AI tier is used up.
+SAVED = HERE / "data" / "verified"
+
+
+def load_saved(name):
+    try:
+        d = json.loads((SAVED / f"{name}.json").read_text(encoding="utf-8"))
+        return [T.Result(**r) for r in d["results"]], d
+    except Exception:
+        return None, None
+
+
+def save_button(name, results, used):
+    import datetime as _dt
+    blob = json.dumps({"date": _dt.date.today().isoformat(), "model": used, "prompt": T.PROMPT_VERSION,
+                       "results": [r.__dict__ for r in results]}, ensure_ascii=False, indent=1)
+    st.download_button("Download this run (JSON)", blob, file_name=f"{name}.json", mime="application/json", key=f"dl_{name}")
+
+
+def saved_label(meta):
+    return f"Saved verified run from {meta['date']} · {meta['model']} · prompt {meta['prompt']}"
+
+
+def show_error(e):
+    st.error(ai_error_text(e))
+    with st.expander("Technical detail"):
+        st.code(str(e)[:900])
+
+
 def result_table(emails, results):
     df = pd.DataFrame([{
         "": FLAG.get(r.language, "🌐"),
@@ -145,13 +175,18 @@ with tab_inbox:
     if st.button("▶  Sort the inbox", type="primary"):
         st.session_state.inbox_go = True
     if st.session_state.get("inbox_go"):
+        live = True
         try:
             with st.spinner("The AI is reading 9 emails…"):
                 res, used = triage(INBOX)
         except T.AIError as e:
-            st.error(ai_error_text(e))
-            st.caption("Technical detail: " + str(e)[:700])
-            st.stop()
+            res, meta = load_saved("inbox")
+            if res is None:
+                show_error(e)
+                st.stop()
+            live = False
+            st.warning(ai_error_text(e) + " Showing the last saved run instead.")
+            used = saved_label(meta)
         teams = pd.Series([r.team for r in res]).value_counts()
         cols = st.columns(len(teams) + 1)
         cols[0].metric("Need a person", sum(r.needs_human for r in res), help="Always reviewed: fraud, hardship, complaints, data requests, or AI unsure")
@@ -161,6 +196,8 @@ with tab_inbox:
         st.markdown("**Open an email to see the draft reply**")
         result_cards(INBOX, res)
         st.caption(f"Model: {used}")
+        if live and API_KEY:
+            save_button("inbox", res, used)
 
 # ---------------------------------------------------------------- your own
 with tab_own:
@@ -174,8 +211,7 @@ with tab_own:
             result_cards([{"id": "YOU", "text": own.strip()}], res)
             st.caption(f"Model: {used}")
         except T.AIError as e:
-            st.error(ai_error_text(e))
-            st.caption("Technical detail: " + str(e)[:700])
+            show_error(e)
 
 # ---------------------------------------------------------------- accuracy test
 with tab_test:
@@ -186,16 +222,22 @@ with tab_test:
                 "- **Missed risk**: a fraud, hardship or regulator threat that slipped through without a person seeing it. This must be **0**.")
     with st.expander("See all 96 emails and their expected answers"):
         st.dataframe(pd.DataFrame(TEST)[["id", "lang", "text", "topic", "urgency", "team", "note"]], hide_index=True, width="stretch")
-    if st.button("▶  Run the test", type="primary"):
+    saved, meta = load_saved("test")
+    if st.button("▶  Run it live" if saved else "▶  Run the test", type="primary"):
         st.session_state.test_go = True
+    res = used = None
     if st.session_state.get("test_go"):
         try:
             with st.spinner("Sending 96 emails in batches of 12 (one to two minutes on the free tier)…"):
                 res, used = triage(TEST)
+            used = f"{used} · prompt {T.PROMPT_VERSION} · live run (cached for a week, so repeat runs are instant)"
         except T.AIError as e:
-            st.error(ai_error_text(e))
-            st.caption("Technical detail: " + str(e)[:700])
-            st.stop()
+            show_error(e)
+            if saved:
+                st.info("Below: the last saved run.")
+    if res is None and saved:
+        res, used = saved, saved_label(meta)
+    if res is not None:
         s = T.score(TEST, res)
         c = st.columns(4)
         c[0].metric("Right team", f"{s['team']:.0%}")
@@ -208,7 +250,9 @@ with tab_test:
         st.markdown(f"**Where it disagreed with the expected answer ({len(misses)})**")
         if misses:
             st.table(pd.DataFrame(misses)[["id", "lang", "text", "expected", "got", "note"]].set_index("id"))
-        st.caption(f"Model: {used} · prompt {T.PROMPT_VERSION} · results are cached for a week, so repeat runs are instant.")
+        st.caption(used)
+        if st.session_state.get("test_go") and API_KEY and "live run" in used:
+            save_button("test", res, used.split(" · ")[0])
 
 st.divider()
 st.caption("Built with Claude Code by Jānis Saulītis · engine: `triage.py` · the team, the review rules and the escalation "
