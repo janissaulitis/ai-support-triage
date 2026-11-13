@@ -152,7 +152,7 @@ def pick_model(api_key: str, preferred: str = "") -> str:
 
     def rank(n):
         ver = re.findall(r"gemini-(\d+(?:\.\d+)?)", n)
-        return (float(ver[0]) if ver else 0, "preview" not in n, n.endswith("latest"), -len(n))
+        return ("preview" not in n, float(ver[0]) if ver else 0, n.endswith("latest"), -len(n))
 
     return max(flash, key=rank)
 
