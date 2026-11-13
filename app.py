@@ -9,12 +9,14 @@ import streamlit as st
 import importlib
 import re
 
+import kit
 import triage as T
 
 T = importlib.reload(T)  # Streamlit Cloud keeps old copies of imported files after an update; always use the latest
+kit = importlib.reload(kit)
 
-st.set_page_config(page_title="AI support inbox triage", page_icon="📨", layout="wide")
-st.markdown("<style>.block-container{max-width:1240px;padding-top:2.2rem}</style>", unsafe_allow_html=True)
+kit.page("Inbox Router", "Sorts customer emails in 6 languages and drafts the replies", mark="📨",
+         meta="For a lender's support team · runs on Google Gemini")
 
 HERE = Path(__file__).parent
 TEST = json.loads((HERE / "data" / "test_emails.json").read_text(encoding="utf-8"))
@@ -149,9 +151,8 @@ def _model_label():
 
 
 # ---------------------------------------------------------------- header
-st.title("AI support inbox for a lender")
-st.markdown("**Reads customer emails in 6 languages, sorts them by topic and urgency, routes them to the right team "
-            "and drafts a reply in the customer's language.** A person always reviews the sensitive ones.")
+st.markdown("Reads each customer email, sorts it by **topic and urgency**, sends it to **the right team** and drafts a "
+            "reply **in the customer's language**. Fraud, hardship, complaints and data requests always go to a person.")
 with st.container(horizontal=True):
     with st.popover("How it works"):
         st.markdown(
@@ -161,17 +162,16 @@ with st.container(horizontal=True):
             "`complaints` and `data requests`, or anything the AI is unsure about.\n"
             "4. **Try your own email** in any language, or run the **96-email accuracy test**."
         )
-st.caption("Demo for a fictional lender. All emails are invented. Runs on Google Gemini"
-           + (f" ({_model_label()})" if API_KEY else "")
-           + ("" if API_KEY else " — **no AI key set, so this copy runs on simple keyword rules**") + ".")
+st.caption("All emails are invented. " + (f"AI model: {_model_label()}." if API_KEY
+                                            else "No AI key set, so this copy runs on simple keyword rules."))
 
-tab_inbox, tab_own, tab_test = st.tabs(["📥 Inbox", "✍️ Try your own email", "🎯 Accuracy test (96 emails)"])
+tab_inbox, tab_own, tab_test = st.tabs(["Inbox", "Try your own email", "Accuracy test (96 emails)"])
 
 # ---------------------------------------------------------------- inbox
 with tab_inbox:
     st.markdown("**This morning's inbox**")
     st.dataframe(pd.DataFrame([{"": FLAG[e["lang"]], "Email": e["text"]} for e in INBOX]), hide_index=True, width="stretch",
-                 column_config={"": st.column_config.TextColumn(width="small")})
+                 column_config={"": st.column_config.TextColumn(width=36), "Email": st.column_config.TextColumn(width=1000)})
     if st.button("▶  Sort the inbox", type="primary"):
         st.session_state.inbox_go = True
     if st.session_state.get("inbox_go"):
@@ -189,7 +189,7 @@ with tab_inbox:
             used = saved_label(meta)
         teams = pd.Series([r.team for r in res]).value_counts()
         cols = st.columns(len(teams) + 1)
-        cols[0].metric("Need a person", sum(r.needs_human for r in res), help="Always reviewed: fraud, hardship, complaints, data requests, or AI unsure")
+        cols[0].metric("To a person", sum(r.needs_human for r in res), help="Always reviewed: fraud, hardship, complaints, data requests, or AI unsure")
         for c, (team, n) in zip(cols[1:], teams.items()):
             c.metric(team, n)
         result_table(INBOX, res)
@@ -254,6 +254,4 @@ with tab_test:
         if st.session_state.get("test_go") and API_KEY and "live run" in used:
             save_button("test", res, used.split(" · ")[0])
 
-st.divider()
-st.caption("Built with Claude Code by Jānis Saulītis · engine: `triage.py` · the team, the review rules and the escalation "
-           "words are fixed code, not left to the AI.")
+kit.footer("Google Gemini · triage.py")
