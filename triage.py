@@ -132,7 +132,7 @@ class AIError(RuntimeError):
     pass
 
 
-def pick_model(api_key: str, preferred: str = "") -> str:
+def pick_models(api_key: str, preferred: str = "") -> list[str]:
     """Ask Google which models this key can use and pick the newest standard Flash model
     (fast and on the free tier). A model named in the app's settings wins if it exists."""
     from google import genai
@@ -143,8 +143,6 @@ def pick_model(api_key: str, preferred: str = "") -> str:
         actions = getattr(m, "supported_actions", None) or []
         if "generateContent" in actions:
             names.append(m.name.removeprefix("models/"))
-    if preferred and preferred in names:
-        return preferred
     skip = ("lite", "image", "tts", "audio", "live", "embedding", "thinking", "exp", "learnlm", "8b")
     flash = [n for n in names if "flash" in n and not any(x in n for x in skip)]
     if not flash:
@@ -154,10 +152,14 @@ def pick_model(api_key: str, preferred: str = "") -> str:
         ver = re.findall(r"gemini-(\d+(?:\.\d+)?)", n)
         return ("preview" not in n, float(ver[0]) if ver else 0, n.endswith("latest"), -len(n))
 
-    return max(flash, key=rank)
+    ranked = sorted(flash, key=rank, reverse=True)[:4]
+    if preferred and preferred in names:
+        ranked = [preferred] + [m for m in ranked if m != preferred]
+    return ranked
 
 
-def triage_ai(emails: list[dict], api_key: str, model: str, batch: int = 8, on_progress=None, on_wait=None) -> tuple[list[Result], str]:
+def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 8, on_progress=None, on_wait=None) -> tuple[list[Result], str]:
+    """models: best first. If one is overloaded (503) the next one takes over."""
     """emails: [{"id", "text"}]. Returns results in the same order, plus the model version used."""
     from google import genai
     from google.genai import types
@@ -165,7 +167,8 @@ def triage_ai(emails: list[dict], api_key: str, model: str, batch: int = 8, on_p
     client = genai.Client(api_key=api_key)
     think_off = [True]
     out: dict[str, Result] = {}
-    used = model
+    models = list(models)
+    model = used = models[0]
     for start in range(0, len(emails), batch):
         chunk = emails[start:start + batch]
         payload = json.dumps([{"id": e["id"], "email": e["text"]} for e in chunk], ensure_ascii=False)
@@ -188,6 +191,12 @@ def triage_ai(emails: list[dict], api_key: str, model: str, batch: int = 8, on_p
                 msg = str(e)
                 if think_off[0] and "thinking" in msg.lower():
                     think_off[0] = False  # this model cannot switch thinking off; just retry without
+                    continue
+                if ("503" in msg or "UNAVAILABLE" in msg or "overloaded" in msg) and len(models) > 1:
+                    models.pop(0)  # this model is overloaded right now: move on to the next one
+                    model = models[0]
+                    if on_wait:
+                        on_wait(f"model busy, switching to {model}", attempt + 1, 0)
                     continue
                 if attempt == 5 or "404" in msg or "API_KEY" in msg or "PERMISSION" in msg:
                     raise AIError(msg[:300]) from e

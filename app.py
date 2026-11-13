@@ -33,17 +33,17 @@ INBOX = [t for i in INBOX_IDS for t in TEST if t["id"] == i]
 
 
 @st.cache_data(show_spinner=False, ttl=60 * 60 * 24)
-def model_name():
-    return T.pick_model(API_KEY, MODEL_SETTING)
+def model_names():
+    return T.pick_models(API_KEY, MODEL_SETTING)
 
 
 @st.cache_data(show_spinner=False, max_entries=200, ttl=60 * 60 * 24 * 7)
-def run_ai(emails_json: str, model: str, version: str):
+def run_ai(emails_json: str, models: list, version: str):
     """Cached for everyone: the same emails are only sent to the AI once a week."""
     emails = json.loads(emails_json)
     note = st.empty()
     results, used = T.triage_ai(
-        emails, API_KEY, model,
+        emails, API_KEY, models,
         on_progress=lambda done, n: note.caption(f"{done} of {n} emails read…"),
         on_wait=lambda why, k, w: note.caption(f"Waiting {w:.0f} s ({why}), attempt {k} of 6…"))
     note.empty()
@@ -62,7 +62,7 @@ def triage(emails):
     if not API_KEY:
         return [T.Result(**r.__dict__) for r in T.triage_rules(json.loads(payload))], "keyword rules (no AI key set)"
     try:
-        model = model_name()
+        model = model_names()
     except T.AIError:
         raise
     except Exception as e:
@@ -103,7 +103,7 @@ def result_cards(emails, results):
 
 def _model_label():
     try:
-        return model_name()
+        return ", then ".join(model_names()[:2])
     except Exception as e:
         return f"model lookup failed: {str(e)[:120]}"
 
