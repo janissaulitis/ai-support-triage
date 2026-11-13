@@ -20,16 +20,27 @@ with sync_playwright() as p:
     app.locator("h1").first.wait_for(timeout=180_000)
     print("awake:", app.locator("h1").first.inner_text())
     if mode == "test":
+      try:
         app.get_by_role("button", name="Sort the inbox").click()
-        app.get_by_text("Open an email to see the draft reply").wait_for(timeout=180_000)
+        app.locator("text=Open an email to see the draft reply, [data-testid=stAlertContentError], [data-testid=stException]").first.wait_for(timeout=240_000)
+        if app.locator("[data-testid=stAlertContentError], [data-testid=stException]").count():
+            raise RuntimeError("app error: " + app.locator("[data-testid=stAlertContentError], [data-testid=stException]").first.inner_text()[:800])
         page.wait_for_timeout(2_000)
         page.screenshot(path=str(out / "1_inbox.png"), full_page=True)
         (out / "1_inbox.txt").write_text(app.locator("[data-testid=stMain]").inner_text())
         app.get_by_role("tab", name="Accuracy test").click()
         app.get_by_role("button", name="Run the test").click()
-        app.get_by_text("Where it disagreed").wait_for(timeout=600_000)
+        app.locator("text=Where it disagreed, [data-testid=stAlertContentError], [data-testid=stException]").first.wait_for(timeout=600_000)
         page.wait_for_timeout(3_000)
         page.screenshot(path=str(out / "2_test.png"), full_page=True)
         (out / "2_test.txt").write_text(app.locator("[data-testid=stMain]").inner_text())
         print("test finished")
+      except Exception as e:
+        print("FAILED:", str(e)[:1000])
+        page.screenshot(path=str(out / "error.png"), full_page=True)
+        try:
+            (out / "error.txt").write_text(app.locator("[data-testid=stMain]").inner_text())
+        except Exception:
+            pass
+        raise
     b.close()
