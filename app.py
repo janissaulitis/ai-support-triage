@@ -6,7 +6,11 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
+import importlib
+
 import triage as T
+
+T = importlib.reload(T)  # Streamlit Cloud keeps old copies of imported files after an update; always use the latest
 
 st.set_page_config(page_title="AI support inbox triage", page_icon="📨", layout="wide")
 st.markdown("<style>.block-container{max-width:1240px;padding-top:2.2rem}</style>", unsafe_allow_html=True)
