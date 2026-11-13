@@ -150,6 +150,7 @@ with tab_inbox:
                 res, used = triage(INBOX)
         except T.AIError as e:
             st.error(ai_error_text(e))
+            st.caption("Technical detail: " + str(e)[:700])
             st.stop()
         teams = pd.Series([r.team for r in res]).value_counts()
         cols = st.columns(len(teams) + 1)
@@ -174,6 +175,7 @@ with tab_own:
             st.caption(f"Model: {used}")
         except T.AIError as e:
             st.error(ai_error_text(e))
+            st.caption("Technical detail: " + str(e)[:700])
 
 # ---------------------------------------------------------------- accuracy test
 with tab_test:
@@ -192,6 +194,7 @@ with tab_test:
                 res, used = triage(TEST)
         except T.AIError as e:
             st.error(ai_error_text(e))
+            st.caption("Technical detail: " + str(e)[:700])
             st.stop()
         s = T.score(TEST, res)
         c = st.columns(4)
