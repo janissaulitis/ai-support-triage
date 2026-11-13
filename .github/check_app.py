@@ -29,8 +29,8 @@ with sync_playwright() as p:
     if wake.count():
         print("was asleep, waking up"); wake.click(); page.wait_for_timeout(90_000)
     app = page.frame_locator("iframe[title='streamlitApp']")
-    app.locator("h1").first.wait_for(timeout=180_000)
-    print("awake:", app.locator("h1").first.inner_text())
+    app.locator(".k-name, h1").first.wait_for(timeout=180_000)
+    print("awake:", app.locator(".k-name, h1").first.inner_text())
     if mode == "test":
       try:
         app.get_by_role("button", name="Sort the inbox").click()
