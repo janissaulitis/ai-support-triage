@@ -197,7 +197,7 @@ def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 
                     continue
                 busy = "503" in msg or "UNAVAILABLE" in msg or "overloaded" in msg
                 limited_now = "429" in msg or "RESOURCE_EXHAUSTED" in msg
-                if (busy or (limited_now and attempt >= 1)) and len(models) > 1:
+                if (busy or (limited_now and (attempt >= 1 or "PerDay" in msg))) and len(models) > 1:
                     # overloaded, or out of this model's free requests: each model has its own limit, so move on
                     models.pop(0)
                     model = models[0]
