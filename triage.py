@@ -132,6 +132,31 @@ class AIError(RuntimeError):
     pass
 
 
+def pick_model(api_key: str, preferred: str = "") -> str:
+    """Ask Google which models this key can use and pick the newest standard Flash model
+    (fast and on the free tier). A model named in the app's settings wins if it exists."""
+    from google import genai
+
+    client = genai.Client(api_key=api_key)
+    names = []
+    for m in client.models.list():
+        actions = getattr(m, "supported_actions", None) or []
+        if "generateContent" in actions:
+            names.append(m.name.removeprefix("models/"))
+    if preferred and preferred in names:
+        return preferred
+    skip = ("lite", "image", "tts", "audio", "live", "embedding", "thinking", "exp", "learnlm", "8b")
+    flash = [n for n in names if "flash" in n and not any(x in n for x in skip)]
+    if not flash:
+        raise AIError(f"No Flash model available for this key. Models found: {', '.join(names[:15])}")
+
+    def rank(n):
+        ver = re.findall(r"gemini-(\d+(?:\.\d+)?)", n)
+        return (float(ver[0]) if ver else 0, "preview" not in n, n.endswith("latest"), -len(n))
+
+    return max(flash, key=rank)
+
+
 def triage_ai(emails: list[dict], api_key: str, model: str, batch: int = 8, on_progress=None) -> tuple[list[Result], str]:
     """emails: [{"id", "text"}]. Returns results in the same order, plus the model version used."""
     from google import genai

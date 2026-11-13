@@ -23,13 +23,18 @@ def secret(name, default=""):
 
 
 API_KEY = secret("GEMINI_API_KEY")
-MODEL = secret("GEMINI_MODEL", "gemini-flash-latest")
+MODEL_SETTING = secret("GEMINI_MODEL", "")
 FLAG = {"lv": "🇱🇻", "lt": "🇱🇹", "pl": "🇵🇱", "es": "🇪🇸", "ro": "🇷🇴", "en": "🇬🇧", "ru": "🇷🇺", "de": "🇩🇪", "other": "🌐"}
 URG = {"high": "🔴 high", "medium": "🟠 medium", "low": "⚪ low"}
 
 # the inbox shown on the first screen: 9 emails, every language, the topics that matter most
 INBOX_IDS = ["E015", "E020", "E043", "E062", "E073", "E086", "E009", "E077", "E055"]
 INBOX = [t for i in INBOX_IDS for t in TEST if t["id"] == i]
+
+
+@st.cache_data(show_spinner=False, ttl=60 * 60 * 24)
+def model_name():
+    return T.pick_model(API_KEY, MODEL_SETTING)
 
 
 @st.cache_data(show_spinner=False, max_entries=200, ttl=60 * 60 * 24 * 7)
@@ -40,11 +45,24 @@ def run_ai(emails_json: str, model: str, version: str):
     return [r.__dict__ for r in results], used
 
 
+def ai_error_text(e):
+    msg = str(e)
+    if "429" in msg or "RESOURCE_EXHAUSTED" in msg:
+        return "The free AI tier is busy (too many requests this minute). Wait a minute and click again."
+    return f"The AI service did not answer: {msg[:400]}"
+
+
 def triage(emails):
     payload = json.dumps([{"id": e["id"], "text": e["text"]} for e in emails], ensure_ascii=False)
     if not API_KEY:
         return [T.Result(**r.__dict__) for r in T.triage_rules(json.loads(payload))], "keyword rules (no AI key set)"
-    rows, used = run_ai(payload, MODEL, T.PROMPT_VERSION)
+    try:
+        model = model_name()
+    except T.AIError:
+        raise
+    except Exception as e:
+        raise T.AIError(str(e)) from e
+    rows, used = run_ai(payload, model, T.PROMPT_VERSION)
     return [T.Result(**r) for r in rows], used
 
 
@@ -108,7 +126,7 @@ with tab_inbox:
             with st.spinner("The AI is reading 9 emails…"):
                 res, used = triage(INBOX)
         except T.AIError as e:
-            st.error(f"The AI service did not answer ({e}). Try again in a minute: the free tier allows a few requests per minute.")
+            st.error(ai_error_text(e))
             st.stop()
         teams = pd.Series([r.team for r in res]).value_counts()
         cols = st.columns(len(teams) + 1)
@@ -132,7 +150,7 @@ with tab_own:
             result_cards([{"id": "YOU", "text": own.strip()}], res)
             st.caption(f"Model: {used}")
         except T.AIError as e:
-            st.error(f"The AI service did not answer ({e}). Try again in a minute.")
+            st.error(ai_error_text(e))
 
 # ---------------------------------------------------------------- accuracy test
 with tab_test:
@@ -150,7 +168,7 @@ with tab_test:
             with st.spinner("Sending 96 emails in batches of 8 (about a minute on the free tier)…"):
                 res, used = triage(TEST)
         except T.AIError as e:
-            st.error(f"The AI service stopped mid-test ({e}). The free tier limits requests per minute; try again shortly.")
+            st.error(ai_error_text(e))
             st.stop()
         s = T.score(TEST, res)
         c = st.columns(4)
