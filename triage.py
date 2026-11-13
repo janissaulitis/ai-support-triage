@@ -32,14 +32,17 @@ TEAM = {
 }
 URGENCY = {
     "high": "Fraud; hardship; payment due today or tomorrow; threat to go to a regulator, lawyer, ombudsman or the media.",
-    "medium": "Money not showing or taken twice; waiting several days; GDPR requests (legal deadline); ordinary complaints; extension not due yet.",
-    "low": "General questions with no deadline or problem.",
+    "medium": "Every extension or postponement request that is not due today or tomorrow (they affect a payment, so never low); "
+              "money not showing or taken twice; waiting several days for a decision; GDPR requests (legal deadline); "
+              "ordinary complaints; any mention of a strange or suspicious message about their loan (possible phishing).",
+    "low": "Only general questions with no deadline, no problem and no waiting: how to pay, early repayment amount, "
+           "an application sent today or yesterday.",
 }
 LANGS = {"lv": "Latvian", "lt": "Lithuanian", "pl": "Polish", "es": "Spanish", "ro": "Romanian", "en": "English",
          "ru": "Russian", "de": "German", "other": "Other"}
 # Never sent without a person reading it first, whatever the model says.
 ALWAYS_HUMAN = {"hardship", "fraud", "complaint", "data_request"}
-PROMPT_VERSION = "v1"
+PROMPT_VERSION = "v2"
 
 SYSTEM = f"""You triage customer emails for a consumer lender that operates in Latvia, Lithuania, Poland, Spain, Peru and Romania.
 For each email return JSON only, following the schema.

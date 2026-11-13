@@ -80,7 +80,7 @@ E = [
     ("es", "early_repayment", "low", "Quiero cancelar el préstamo por completo. ¿Cuánto debo exactamente?", ""),
     ("es", "early_repayment", "low", "Buenas, si pago todo antes, ¿me descuentan intereses?", "Peru"),
     ("es", "application_status", "low", "Envié mi solicitud ayer, ¿cuándo recibiré respuesta?", ""),
-    ("es", "application_status", "low", "¿Necesitan algún documento más para aprobar mi solicitud? Me llegó un correo raro.", ""),
+    ("es", "application_status", "medium", "¿Necesitan algún documento más para aprobar mi solicitud? Me llegó un correo raro.", "strange email: possible phishing (label corrected after the AI flagged it)"),
     ("es", "hardship", "high", "Me quedé sin trabajo y no puedo pagar. Por favor, no me llamen más, quiero buscar una solución.", ""),
     ("es", "hardship", "high", "Estoy enfermo y con muchas deudas, no sé cómo voy a pagar esto. Estoy desesperado.", "distress"),
     ("es", "complaint", "medium", "Su atención al cliente es pésima, nadie contesta el teléfono.", ""),

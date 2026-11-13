@@ -499,9 +499,9 @@
   "lang": "es",
   "text": "¿Necesitan algún documento más para aprobar mi solicitud? Me llegó un correo raro.",
   "topic": "application_status",
-  "urgency": "low",
+  "urgency": "medium",
   "team": "Underwriting",
-  "note": ""
+  "note": "strange email: possible phishing (label corrected after the AI flagged it)"
  },
  {
   "id": "E057",
