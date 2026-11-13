@@ -204,7 +204,7 @@ def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 
                     if on_wait:
                         on_wait(f"model busy, switching to {model}", attempt + 1, 0)
                     continue
-                if attempt == 5 or "404" in msg or "API_KEY" in msg or "PERMISSION" in msg:
+                if attempt == 5 or "PerDay" in msg or "404" in msg or "API_KEY" in msg or "PERMISSION" in msg:
                     raise AIError(msg[:300]) from e
                 limited = "429" in msg or "RESOURCE_EXHAUSTED" in msg
                 wait = (20 if limited else 3) * (attempt + 1) / 2

@@ -7,6 +7,7 @@ import pandas as pd
 import streamlit as st
 
 import importlib
+import re
 
 import triage as T
 
@@ -57,7 +58,12 @@ def run_ai(emails_json: str, models: list, version: str):
 def ai_error_text(e):
     msg = str(e)
     if "429" in msg or "RESOURCE_EXHAUSTED" in msg:
-        return "The free AI tier is busy (too many requests this minute). Wait a minute and click again."
+        daily = "PerDay" in msg or "per day" in msg.lower()
+        detail = re.search(r"quotaId['\"]?:\s*['\"]([^'\"]+)", msg)
+        what = f" ({detail.group(1)})" if detail else ""
+        if daily:
+            return f"Today's free AI requests are used up{what}. They reset every morning; until then, try again tomorrow."
+        return f"The free AI tier is busy (too many requests this minute){what}. Wait a minute and click again."
     return f"The AI service did not answer: {msg[:400]}"
 
 
