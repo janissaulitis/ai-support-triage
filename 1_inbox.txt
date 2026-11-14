@@ -1,0 +1,98 @@
+📨
+
+Inbox Router
+
+Sorts customer emails in 6 languages and drafts the replies
+Demo · invented data
+For a lender's support team · runs on Google Gemini
+
+Reads each customer email, sorts it by topic and urgency, sends it to the right team and drafts a reply in the customer's language. Fraud, hardship, complaints and data requests always go to a person.
+
+How it works
+
+expand_more
+
+All emails are invented. AI model: gemini-3.8-flash, then gemini-3.7-flash.
+
+Inbox
+
+Try your own email
+
+Accuracy test (96 emails)
+
+This morning's inbox
+
+▶ Sort the inbox
+
+To a person
+
+6
+
+Collections
+
+3
+
+Compliance
+
+2
+
+Fraud
+
+1
+
+Complaints
+
+1
+
+Customer care
+
+1
+
+Underwriting
+
+1
+
+Open an email to see the draft reply
+
+keyboard_arrow_right
+
+🇱🇻 🔴 high · fraud → Fraud — Customer claims identity theft regarding a loan they never applied for.
+
+keyboard_arrow_right
+
+🇱🇹 🔴 high · extension → Collections — Customer asks for a payment extension for a payment due today.
+
+keyboard_arrow_right
+
+🇵🇱 🔴 high · complaint → Complaints — Customer threatens to report unannounced fees to the Financial Ombudsman.
+
+keyboard_arrow_right
+
+🇷🇴 🔴 high · hardship → Collections — Customer lost their job and cannot pay instalments, requesting available options.
+
+keyboard_arrow_right
+
+🇱🇻 🔴 high · hardship → Collections — Customer lost job and cannot make full payments, seeking assistance to avoid collection.
+
+keyboard_arrow_right
+
+🇪🇸 🟠 medium · data request → Compliance — Customer requests access to personal data and a call recording under GDPR.
+
+keyboard_arrow_right
+
+🇷🇴 🟠 medium · data request → Compliance — Customer requests full personal data deletion under GDPR.
+
+keyboard_arrow_right
+
+🇬🇧 ⚪ low · early repayment → Customer care — Customer asks for the total early repayment amount.
+
+keyboard_arrow_right
+
+🇪🇸 ⚪ low · application status → Underwriting — Customer is asking about the status of a loan application submitted yesterday.
+
+Model: gemini-3.6-flash
+
+Download this run (JSON)
+
+Built by Jānis Saulītis with AI · Google Gemini · triage.py
+See more tools

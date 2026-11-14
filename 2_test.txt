@@ -1,0 +1,134 @@
+📨
+
+Inbox Router
+
+Sorts customer emails in 6 languages and drafts the replies
+Demo · invented data
+For a lender's support team · runs on Google Gemini
+
+Reads each customer email, sorts it by topic and urgency, sends it to the right team and drafts a reply in the customer's language. Fraud, hardship, complaints and data requests always go to a person.
+
+How it works
+
+expand_more
+
+All emails are invented. AI model: gemini-3.8-flash, then gemini-3.7-flash.
+
+Inbox
+
+Try your own email
+
+Accuracy test (96 emails)
+
+96 invented emails, each with the answer a careful support lead would give. 16 per language, 2 per topic, including tricky ones: two problems in one email, sarcasm, missing diacritics, a customer who paid a scammer's account. The test checks what matters to the business:
+
+Team: did it reach the right people?
+Topic and urgency
+Missed risk: a fraud, hardship or regulator threat that slipped through without a person seeing it. This must be 0.
+keyboard_arrow_right
+
+See all 96 emails and their expected answers
+
+▶ Run the test
+
+Right team
+
+100%
+
+Right topic
+
+100%
+
+Right urgency
+
+99%
+
+Missed risk
+
+0
+
+Right team, by language
+
+0
+5
+10
+15
+20
+25
+30
+35
+40
+45
+50
+55
+60
+65
+70
+75
+80
+85
+90
+95
+100
+🇪🇸 Spanish
+🇬🇧 English
+🇱🇹 Lithuanian
+🇱🇻 Latvian
+🇵🇱 Polish
+🇷🇴 Romanian
+
+Where it disagreed with the expected answer (1)
+
+id
+
+	
+
+lang
+
+	
+
+text
+
+	
+
+expected
+
+	
+
+got
+
+	
+
+note
+
+
+
+
+E064
+
+	
+
+es
+
+	
+
+Me llamaron diciendo que eran de ustedes y me pidieron el código del SMS. ¿Era real?
+
+	
+
+fraud / high / Fraud
+
+	
+
+fraud / medium / Fraud
+
+	
+
+social engineering
+
+gemini-3.6-flash · prompt v2 · live run (cached for a week, so repeat runs are instant)
+
+Download this run (JSON)
+
+Built by Jānis Saulītis with AI · Google Gemini · triage.py
+See more tools
