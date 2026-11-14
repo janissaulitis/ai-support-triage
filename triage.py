@@ -167,7 +167,7 @@ def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 
     from google import genai
     from google.genai import types
 
-    client = genai.Client(api_key=api_key)
+    client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=120_000))  # never hang on one call
     think_off = [True]
     out: dict[str, Result] = {}
     models = list(models)
@@ -195,7 +195,7 @@ def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 
                 if think_off[0] and "thinking" in msg.lower():
                     think_off[0] = False  # this model cannot switch thinking off; just retry without
                     continue
-                busy = "503" in msg or "UNAVAILABLE" in msg or "overloaded" in msg
+                busy = "timed out" in msg.lower() or "timeout" in msg.lower() or "503" in msg or "UNAVAILABLE" in msg or "overloaded" in msg
                 limited_now = "429" in msg or "RESOURCE_EXHAUSTED" in msg
                 if (busy or (limited_now and (attempt >= 1 or "PerDay" in msg))) and len(models) > 1:
                     # overloaded, or out of this model's free requests: each model has its own limit, so move on

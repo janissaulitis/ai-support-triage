@@ -1,0 +1,142 @@
+{
+ "date": "2026-11-14",
+ "model": "gemini-3.6-flash",
+ "prompt": "v2",
+ "results": [
+  {
+   "id": "E015",
+   "language": "lv",
+   "topic": "fraud",
+   "urgency": "high",
+   "summary_en": "Customer claims identity theft regarding a loan they never applied for.",
+   "reply": "Labdien! Paldies, ka informējāt mūs par šo situāciju. Lūdzu, neveiciet nekādus maksājumus un neizpaudiet savus datus trešajām personām. Esam pārsūtījuši jūsu lietu mūsu drošības nodaļai, un mēs drīzumā ar jums sazināsimies, lai noskaidrotu visas detaļas. Ar cieņu, Klientu atbalsta dienests",
+   "flags": [],
+   "confidence": 0.98,
+   "team": "Fraud",
+   "needs_human": true,
+   "why_human": "fraud is always reviewed by a person",
+   "source": "ai"
+  },
+  {
+   "id": "E020",
+   "language": "lt",
+   "topic": "extension",
+   "urgency": "high",
+   "summary_en": "Customer asks for a payment extension for a payment due today.",
+   "reply": "Laba diena. Dėkojame, kad susisiekėte su mumis. Norėdami pratęsti mokėjimo terminą, prisijunkite prie savo kliento paskyros ir pasirinkite termino pratęsimo galimybę arba susisiekite su mumis tiesiogiai. Jei kiltų papildomų klausimų, mielai jums padėsime. Pagarbiai, Klientų aptarnavimo skyrius",
+   "flags": [
+    "payment due today"
+   ],
+   "confidence": 0.95,
+   "team": "Collections",
+   "needs_human": false,
+   "why_human": "simple request: reply can go after a quick check",
+   "source": "ai"
+  },
+  {
+   "id": "E043",
+   "language": "pl",
+   "topic": "complaint",
+   "urgency": "high",
+   "summary_en": "Customer threatens to report unannounced fees to the Financial Ombudsman.",
+   "reply": "Dzień dobry. Potwierdzamy otrzymanie Pana/Pani zgłoszenia dotyczącego naliczonych opłat. Sprawa została przekazana do naszego działu reklamacji, który dokładnie ją przeanalizuje. Odpowiemy na Pana/Pani wiadomość najszybciej jak to możliwe. Z poważaniem, Dział Obsługi Klienta",
+   "flags": [
+    "regulator threat",
+    "ombudsman"
+   ],
+   "confidence": 0.98,
+   "team": "Complaints",
+   "needs_human": true,
+   "why_human": "complaint is always reviewed by a person",
+   "source": "ai"
+  },
+  {
+   "id": "E062",
+   "language": "es",
+   "topic": "data_request",
+   "urgency": "medium",
+   "summary_en": "Customer requests access to personal data and a call recording under GDPR.",
+   "reply": "Hola. Hemos recibido su solicitud para acceder a sus datos personales y a la grabación de la llamada. Nuestro equipo especializado está procesando su petición conforme a la normativa de protección de datos y se la enviaremos a la brevedad. Quedamos a su disposición para cualquier duda adicional. Atentamente, Atención al Cliente",
+   "flags": [],
+   "confidence": 0.98,
+   "team": "Compliance",
+   "needs_human": true,
+   "why_human": "data request is always reviewed by a person",
+   "source": "ai"
+  },
+  {
+   "id": "E073",
+   "language": "ro",
+   "topic": "hardship",
+   "urgency": "high",
+   "summary_en": "Customer lost their job and cannot pay instalments, requesting available options.",
+   "reply": "Bună ziua. Ne pare rău să auzim despre situația dumneavoastră dificilă. Un specialist din echipa noastră vă va contacta în cel mai scurt timp pentru a discuta opțiunile disponibile privind reeșalonarea sau ajustarea plăților. Suntem alături de dumneavoastră pentru a găsi o soluție potrivită. Cu respect, Serviciul Suport Clienți",
+   "flags": [
+    "hardship"
+   ],
+   "confidence": 0.99,
+   "team": "Collections",
+   "needs_human": true,
+   "why_human": "hardship is always reviewed by a person",
+   "source": "ai"
+  },
+  {
+   "id": "E086",
+   "language": "en",
+   "topic": "early_repayment",
+   "urgency": "low",
+   "summary_en": "Customer asks for the total early repayment amount.",
+   "reply": "Hello. Thank you for reaching out to us. To fully repay your loan early, the total balance due today is [amount]. You can also log into your client portal to see the updated balance and complete the payment. Customer Support",
+   "flags": [],
+   "confidence": 0.95,
+   "team": "Customer care",
+   "needs_human": false,
+   "why_human": "simple request: reply can go after a quick check",
+   "source": "ai"
+  },
+  {
+   "id": "E009",
+   "language": "lv",
+   "topic": "hardship",
+   "urgency": "high",
+   "summary_en": "Customer lost job and cannot make full payments, seeking assistance to avoid collection.",
+   "reply": "Labdien! Mums ir žēl dzirdēt par jūsu radušos situāciju. Mūsu speciālists drīzumā sazināsies ar jums, lai pārrunātu iespējamos risinājumus un palīdzētu pielāgot maksājumu grafiku. Ar cieņu, Klientu atbalsta dienests",
+   "flags": [
+    "hardship"
+   ],
+   "confidence": 0.99,
+   "team": "Collections",
+   "needs_human": true,
+   "why_human": "hardship is always reviewed by a person",
+   "source": "ai"
+  },
+  {
+   "id": "E077",
+   "language": "ro",
+   "topic": "data_request",
+   "urgency": "medium",
+   "summary_en": "Customer requests full personal data deletion under GDPR.",
+   "reply": "Bună ziua. Am înregistrat solicitarea dumneavoastră privind ștergerea datelor cu caracter personal conform GDPR. Cererea a fost transmisă departamentului nostru de protecție a datelor și va fi procesată în termenul legal. Vă vom confirma finalizarea acestei proceduri în cel mai scurt timp. Cu respect, Serviciul Suport Clienți",
+   "flags": [],
+   "confidence": 0.99,
+   "team": "Compliance",
+   "needs_human": true,
+   "why_human": "data request is always reviewed by a person",
+   "source": "ai"
+  },
+  {
+   "id": "E055",
+   "language": "es",
+   "topic": "application_status",
+   "urgency": "low",
+   "summary_en": "Customer is asking about the status of a loan application submitted yesterday.",
+   "reply": "Hola. Gracias por ponerse en contacto con nosotros. Estamos revisando su solicitud y le enviaremos una respuesta tan pronto como se complete la evaluación. Agradecemos su paciencia. Atentamente, Customer Support",
+   "flags": [],
+   "confidence": 0.98,
+   "team": "Underwriting",
+   "needs_human": false,
+   "why_human": "simple request: reply can go after a quick check",
+   "source": "ai"
+  }
+ ]
+}
