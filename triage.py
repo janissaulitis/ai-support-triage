@@ -113,6 +113,8 @@ _ESCALATE = re.compile(
 
 def apply_rules(r: Result, text: str) -> Result:
     r.team = TEAM.get(r.topic, "Customer care")
+    if r.topic == "fraud" and r.urgency != "high":
+        r.urgency = "high"  # policy: a possible scam is always answered first, whatever the tone of the email
     if _ESCALATE.search(text) and r.urgency != "high":
         r.urgency = "high"
         if "escalation words" not in r.flags:
