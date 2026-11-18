@@ -188,10 +188,12 @@ with tab_inbox:
             st.warning(ai_error_text(e) + " Showing the last saved run instead.")
             used = saved_label(meta)
         teams = pd.Series([r.team for r in res]).value_counts()
-        cols = st.columns(len(teams) + 1)
-        cols[0].metric("To a person", sum(r.needs_human for r in res), help="Always reviewed: fraud, hardship, complaints, data requests, or AI unsure")
-        for c, (team, n) in zip(cols[1:], teams.items()):
-            c.metric(team, n)
+        human = sum(r.needs_human for r in res)
+        urgent = sum(r.urgency == "high" for r in res)
+        kit.answer("Inbox sorted", f"{len(res)} emails sorted into {len(teams)} teams, {urgent} urgent",
+                   f"<b>{human}</b> go to a person before any reply. Fraud, hardship, complaints and data requests "
+                   "always go to a person; simple requests get a draft reply ready to send after a quick check.",
+                   [("To a person", str(human))] + [(team, str(n)) for team, n in teams.items()])
         result_table(INBOX, res)
         st.markdown("**Open an email to see the draft reply**")
         result_cards(INBOX, res)
@@ -239,11 +241,14 @@ with tab_test:
         res, used = saved, saved_label(meta)
     if res is not None:
         s = T.score(TEST, res)
-        c = st.columns(4)
-        c[0].metric("Right team", f"{s['team']:.0%}")
-        c[1].metric("Right topic", f"{s['topic']:.0%}")
-        c[2].metric("Right urgency", f"{s['urgency']:.0%}")
-        c[3].metric("Missed risk", s["missed_risk"], help="High-risk emails that no person would have seen. Target: 0.")
+        right = sum(r["topic_ok"] and r["urgency_ok"] for r in s["rows"])
+        kit.answer("Accuracy test", f"{right} of {len(TEST)} emails sorted exactly right",
+                   f"Missed risk: <b>{s['missed_risk']}</b>. No fraud, hardship or regulator threat slipped past a person."
+                   if s["missed_risk"] == 0 else
+                   f"Missed risk: <b>{s['missed_risk']}</b> high-risk emails would not have reached a person.",
+                   [("Right team", f"{s['team']:.0%}"), ("Right topic", f"{s['topic']:.0%}"),
+                    ("Right urgency", f"{s['urgency']:.0%}"), ("Missed risk", str(s["missed_risk"]))],
+                   tone="good" if s["missed_risk"] == 0 else "bad")
         st.markdown("**Right team, by language**")
         st.bar_chart(pd.Series({f"{FLAG[k]} {T.LANGS[k]}": v * 100 for k, v in s["by_lang"].items()}, name="% right"), horizontal=True, height=240, color="#2fb985")
         misses = [r for r in s["rows"] if not (r["topic_ok"] and r["urgency_ok"])]
