@@ -1,4 +1,5 @@
 """AI support inbox for a fictional consumer lender. Run: streamlit run app.py"""
+import html
 import json
 import os
 from pathlib import Path
@@ -15,7 +16,7 @@ import triage as T
 T = importlib.reload(T)  # Streamlit Cloud keeps old copies of imported files after an update; always use the latest
 kit = importlib.reload(kit)
 
-kit.page("Inbox Router", "Sorts customer emails in 6 languages and drafts the replies", mark="📨",
+kit.page("Inbox Router", "Sorts customer emails in 6 languages and drafts the replies", mark="inbox", icon="📨",
          meta="For a lender's support team · runs on Google Gemini")
 
 HERE = Path(__file__).parent
@@ -113,34 +114,31 @@ def show_error(e):
         st.code(str(e)[:900])
 
 
+URG_TONE = {"high": "bad", "medium": "warn", "low": ""}
+
+
 def result_table(emails, results):
-    df = pd.DataFrame([{
-        "": FLAG.get(r.language, "🌐"),
-        "Urgency": URG[r.urgency],
-        "Topic": r.topic.replace("_", " "),
-        "Team": r.team,
-        "Person must review": "👤 yes" if r.needs_human else "✓ quick check",
-        "Summary": r.summary_en,
-    } for r in results])
-    order = {"🔴 high": 0, "🟠 medium": 1, "⚪ low": 2}
-    df["_o"] = df["Urgency"].map(order)
-    st.dataframe(df.sort_values("_o").drop(columns="_o"), hide_index=True, width="stretch",
-                 column_config={"": st.column_config.TextColumn(width="small"), "Summary": st.column_config.TextColumn(width="large")})
+    rows = sorted(results, key=lambda r: ["high", "medium", "low"].index(r.urgency))
+    kit.table([{"l": r.language, "u": r.urgency.capitalize(), "t": r.topic.replace("_", " "), "team": r.team,
+                "h": "Person first" if r.needs_human else "Quick check", "s": r.summary_en} for r in rows],
+              [kit.col("", "l", "lang"), kit.col("Urgency", "u", "chip", {"High": "bad", "Medium": "warn"}),
+               kit.col("Topic", "t", "chip", {}), kit.col("Team", "team", "strong"),
+               kit.col("Review", "h", "chip", {"Person first": "warn", "Quick check": "good"}), kit.col("Summary", "s", "wrap")])
 
 
 def result_cards(emails, results):
     text = {e["id"]: e["text"] for e in emails}
     for r in sorted(results, key=lambda r: ["high", "medium", "low"].index(r.urgency)):
-        with st.expander(f"{FLAG.get(r.language, '🌐')}  {URG[r.urgency]} · {r.topic.replace('_', ' ')} → {r.team}  —  {r.summary_en}"):
+        with st.expander(f"{r.language.upper()} · {r.urgency} urgency · {r.topic.replace('_', ' ')} → {r.team}: {r.summary_en}"):
             a, b = st.columns(2)
-            a.markdown("**Customer wrote**")
-            a.info(text[r.id])
-            if r.flags:
-                a.markdown("**Flags:** " + " ".join(f"`{f}`" for f in r.flags))
-            a.caption(f"{'👤 A person reviews before sending: ' if r.needs_human else '✓ '}{r.why_human}. "
-                      f"AI confidence {r.confidence:.0%}.")
-            b.markdown(f"**Draft reply ({T.LANGS.get(r.language, r.language)})**")
-            b.success(r.reply)
+            a.markdown(f"<p class='k-mail-h'>Customer wrote</p><div class='k-mail'>{html.escape(text[r.id])}</div>",
+                       unsafe_allow_html=True)
+            b.markdown(f"<p class='k-mail-h'>Draft reply, {html.escape(T.LANGS.get(r.language, r.language))}</p>"
+                       f"<div class='k-mail reply'>{html.escape(r.reply)}</div>", unsafe_allow_html=True)
+            chips = "".join(f"<span class='k-chip warn' style='margin-right:6px'>{html.escape(f)}</span>" for f in r.flags)
+            st.markdown((f"<div style='margin-top:10px'>{chips}</div>" if chips else "")
+                        + f"<div class='k-row-sub' style='margin-top:8px'>{'A person reviews before sending: ' if r.needs_human else ''}"
+                        f"{html.escape(r.why_human)}. AI confidence {r.confidence:.0%}.</div>", unsafe_allow_html=True)
 
 
 def _model_label():
@@ -170,8 +168,7 @@ tab_inbox, tab_own, tab_test = st.tabs(["Inbox", "Try your own email", "Accuracy
 # ---------------------------------------------------------------- inbox
 with tab_inbox:
     st.markdown("**This morning's inbox**")
-    st.dataframe(pd.DataFrame([{"": FLAG[e["lang"]], "Email": e["text"]} for e in INBOX]), hide_index=True, width="stretch",
-                 column_config={"": st.column_config.TextColumn(width=36), "Email": st.column_config.TextColumn(width=1000)})
+    kit.table([{"l": e["lang"], "t": e["text"]} for e in INBOX], [kit.col("", "l", "lang"), kit.col("Email", "t", "wrap")])
     if st.button("▶  Sort the inbox", type="primary"):
         st.session_state.inbox_go = True
     if st.session_state.get("inbox_go"):
@@ -223,7 +220,10 @@ with tab_test:
     st.markdown("- **Team**: did it reach the right people?  \n- **Topic** and **urgency**  \n"
                 "- **Missed risk**: a fraud, hardship or regulator threat that slipped through without a person seeing it. This must be **0**.")
     with st.expander("See all 96 emails and their expected answers"):
-        st.dataframe(pd.DataFrame(TEST)[["id", "lang", "text", "topic", "urgency", "team", "note"]], hide_index=True, width="stretch")
+        kit.table([{**e, "topic": e["topic"].replace("_", " "), "urgency": e["urgency"].capitalize()} for e in TEST],
+                  [kit.col("", "lang", "lang"), kit.col("Email", "text", "wrap"), kit.col("Topic", "topic", "chip", {}),
+                   kit.col("Urgency", "urgency", "chip", {"High": "bad", "Medium": "warn"}), kit.col("Team", "team", "strong"),
+                   kit.col("Why it's tricky", "note", "muted")], max_height=460)
     saved, meta = load_saved("test")
     if st.button("▶  Run it live" if saved else "▶  Run the test", type="primary"):
         st.session_state.test_go = True
@@ -250,11 +250,13 @@ with tab_test:
                     ("Right urgency", f"{s['urgency']:.0%}"), ("Missed risk", str(s["missed_risk"]))],
                    tone="good" if s["missed_risk"] == 0 else "bad")
         st.markdown("**Right team, by language**")
-        st.bar_chart(pd.Series({f"{FLAG[k]} {T.LANGS[k]}": v * 100 for k, v in s["by_lang"].items()}, name="% right"), horizontal=True, height=240, color="#2fb985")
+        kit.bars([{"label": T.LANGS[k], "value": v, "text": f"{v:.0%}"} for k, v in s["by_lang"].items()])
         misses = [r for r in s["rows"] if not (r["topic_ok"] and r["urgency_ok"])]
         st.markdown(f"**Where it disagreed with the expected answer ({len(misses)})**")
         if misses:
-            st.table(pd.DataFrame(misses)[["id", "lang", "text", "expected", "got", "note"]].set_index("id"))
+            kit.table(misses, [kit.col("", "lang", "lang"), kit.col("Email", "text", "wrap"),
+                               kit.col("Expected", "expected", "chip", {}), kit.col("Got", "got", "chip", {}),
+                               kit.col("Note", "note", "muted")])
         st.caption(used)
         if st.session_state.get("test_go") and API_KEY and "live run" in used:
             save_button("test", res, used.split(" · ")[0])
