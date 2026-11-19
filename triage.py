@@ -163,13 +163,16 @@ def pick_models(api_key: str, preferred: str = "") -> list[str]:
     return ranked
 
 
-def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 12, on_progress=None, on_wait=None) -> tuple[list[Result], str]:
+def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 12, on_progress=None, on_wait=None,
+              budget: float | None = None) -> tuple[list[Result], str]:
     """models: best first. If one is overloaded (503) the next one takes over."""
     """emails: [{"id", "text"}]. Returns results in the same order, plus the model version used."""
     from google import genai
     from google.genai import types
 
-    client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=120_000))  # never hang on one call
+    # never hang on one call; with a time budget (a visitor waiting), give up early and let the app show the saved run
+    t0 = time.monotonic()
+    client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=int(min(120, budget or 120) * 1000)))
     think_off = [True]
     out: dict[str, Result] = {}
     models = list(models)
@@ -178,6 +181,8 @@ def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 
         chunk = emails[start:start + batch]
         payload = json.dumps([{"id": e["id"], "email": e["text"]} for e in chunk], ensure_ascii=False)
         for attempt in range(6):
+            if budget and time.monotonic() - t0 > budget:
+                raise AIError(f"BUSY: no answer from the AI within {budget:.0f} seconds")
             try:
                 cfg = dict(system_instruction=SYSTEM, response_mime_type="application/json",
                            response_schema=SCHEMA, temperature=0)
@@ -212,6 +217,8 @@ def triage_ai(emails: list[dict], api_key: str, models: list[str], batch: int = 
                 wait = (20 if limited else 3) * (attempt + 1) / 2
                 if on_wait:
                     on_wait(("rate limit" if limited else msg[:120]), attempt + 1, wait)
+                if budget:
+                    wait = min(wait, max(0.0, budget - (time.monotonic() - t0)))
                 time.sleep(wait)
         texts = {e["id"]: e["text"] for e in chunk}
         for it in items:

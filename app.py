@@ -46,20 +46,22 @@ def model_names():
 
 
 @st.cache_data(show_spinner=False, max_entries=200, ttl=60 * 60 * 24 * 7)
-def run_ai(emails_json: str, models: list, version: str):
+def run_ai(emails_json: str, models: list, version: str, budget: float | None = None):
     """Cached for everyone: the same emails are only sent to the AI once a week."""
     emails = json.loads(emails_json)
     note = st.empty()
     results, used = T.triage_ai(
         emails, API_KEY, models,
         on_progress=lambda done, n: note.caption(f"{done} of {n} emails read…"),
-        on_wait=lambda why, k, w: note.caption(f"Waiting {w:.0f} s ({why}), attempt {k} of 6…"))
+        on_wait=lambda why, k, w: note.caption(f"Waiting {w:.0f} s ({why}), attempt {k} of 6…"), budget=budget)
     note.empty()
     return [r.__dict__ for r in results], used
 
 
 def ai_error_text(e):
     msg = str(e)
+    if msg.startswith("BUSY"):
+        return "Google's AI is busy right now and didn't answer in time. Try again in a few minutes for a live run."
     if "429" in msg or "RESOURCE_EXHAUSTED" in msg:
         daily = "PerDay" in msg or "per day" in msg.lower()
         detail = re.search(r"quotaId['\"]?:\s*['\"]([^'\"]+)", msg)
@@ -70,7 +72,7 @@ def ai_error_text(e):
     return f"The AI service did not answer: {msg[:400]}"
 
 
-def triage(emails):
+def triage(emails, budget=None):
     payload = json.dumps([{"id": e["id"], "text": e["text"]} for e in emails], ensure_ascii=False)
     if not API_KEY:
         return [T.Result(**r.__dict__) for r in T.triage_rules(json.loads(payload))], "keyword rules (no AI key set)"
@@ -80,7 +82,7 @@ def triage(emails):
         raise
     except Exception as e:
         raise T.AIError(str(e)) from e
-    rows, used = run_ai(payload, model, T.PROMPT_VERSION)
+    rows, used = run_ai(payload, model, T.PROMPT_VERSION, budget)
     return [T.Result(**r) for r in rows], used
 
 
@@ -196,7 +198,7 @@ with tab_inbox:
         live = True
         try:
             with st.spinner("The AI is reading 9 emails…"):
-                res, used = triage(INBOX)
+                res, used = triage(INBOX, budget=30)
         except T.AIError as e:
             res, meta = load_saved("inbox")
             if res is None:
