@@ -173,15 +173,14 @@ def _model_label():
 # ---------------------------------------------------------------- header
 st.markdown("Reads each customer email, sorts it by **topic and urgency**, sends it to **the right team** and drafts a "
             "reply **in the customer's language**. Fraud, hardship, complaints and data requests always go to a person.")
-with st.container(horizontal=True):
-    with st.popover("How it works"):
-        st.markdown(
-            "1. Click **Sort the inbox**: 9 emails in Latvian, Lithuanian, Polish, Spanish, Romanian and English.\n"
-            "2. The AI reads each one and returns the topic, urgency, a summary and a draft reply.\n"
-            "3. Fixed business rules then decide the team, and force a person to review `fraud`, `hardship`, "
-            "`complaints` and `data requests`, or anything the AI is unsure about.\n"
-            "4. **Try your own email** in any language, or run the **96-email accuracy test**."
-        )
+kit.demo(os.environ.get("DEMO_VIDEO", "https://janis-saulitis-portfolio.netlify.app/media/inbox.mp4"), "Inbox Router in 1 minute",
+         (
+             "1. Click **Sort the inbox**: 9 emails in Latvian, Lithuanian, Polish, Spanish, Romanian and English.\n"
+             "2. The AI reads each one and returns the topic, urgency, a summary and a draft reply.\n"
+             "3. Fixed business rules then decide the team, and force a person to review `fraud`, `hardship`, "
+             "`complaints` and `data requests`, or anything the AI is unsure about.\n"
+             "4. **Try your own email** in any language, or run the **96-email accuracy test**."
+         ))
 st.caption("All emails are invented. " + (f"AI model: {_model_label()}." if API_KEY
                                             else "No AI key set, so this copy runs on simple keyword rules."))
 
