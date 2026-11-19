@@ -43,7 +43,7 @@ with sync_playwright() as p:
         save_run(app, page, "inbox")
         (out / "1_inbox.txt").write_text(app.locator("[data-testid=stMain]").inner_text())
         app.get_by_role("tab", name="Accuracy test").click()
-        app.get_by_role("button", name="Run the test").click()
+        app.get_by_role("button", name="Run it live").or_(app.get_by_role("button", name="Run the test")).first.click()
         app.get_by_text("Where it disagreed").or_(err).first.wait_for(timeout=900_000)
         if err.count():
             raise RuntimeError("app error: " + err.first.inner_text()[:800])
