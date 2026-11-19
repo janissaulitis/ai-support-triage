@@ -1,13 +1,19 @@
+[theme]
+font = "Geist:https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap, sans-serif"
+headingFont = "Geist:https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap, sans-serif"
+baseFontWeight = 500
+baseRadius = "0.6rem"
+buttonRadius = "0.6rem"
+showWidgetBorder = true
+
 [theme.light]
-primaryColor = "#127a5b"
-backgroundColor = "#f5f6f8"
-secondaryBackgroundColor = "#ffffff"
-textColor = "#101828"
-codeTextColor = "#8a5a00"
+primaryColor = "#5E6AD2"
+backgroundColor = "#FBFBFC"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#0F1012"
 
 [theme.dark]
-primaryColor = "#3dd39b"
-backgroundColor = "#0f1720"
-secondaryBackgroundColor = "#16212c"
-textColor = "#e6edf3"
-codeTextColor = "#f5b83d"
+primaryColor = "#7C83FF"
+backgroundColor = "#08090A"
+secondaryBackgroundColor = "#111214"
+textColor = "#F7F8F8"

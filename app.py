@@ -17,7 +17,7 @@ T = importlib.reload(T)  # Streamlit Cloud keeps old copies of imported files af
 kit = importlib.reload(kit)
 
 kit.page("Inbox Router", "Sorts customer emails in 6 languages and drafts the replies", mark="inbox", icon="📨",
-         meta="For a lender's support team · runs on Google Gemini")
+         meta="For a lender's support team · runs on Google Gemini", theme="glass")
 
 HERE = Path(__file__).parent
 TEST = json.loads((HERE / "data" / "test_emails.json").read_text(encoding="utf-8"))
@@ -126,19 +126,41 @@ def result_table(emails, results):
                kit.col("Review", "h", "chip", {"Person first": "warn", "Quick check": "good"}), kit.col("Summary", "s", "wrap")])
 
 
+def detail_panel(text: str, r):
+    urg = {"high": "bad", "medium": "warn", "low": ""}[r.urgency]
+    head = (f"<span class='k-chip {urg}'>{html.escape(r.topic.replace('_', ' ').capitalize())} · {r.urgency}</span> "
+            f"<span class='k-chip'>→ {html.escape(r.team)}</span> <span class='k-chip'>{html.escape(T.LANGS.get(r.language, r.language))}</span>")
+    if r.needs_human:
+        foot = (f"<b>No AI reply.</b> {html.escape(r.why_human[:1].upper() + r.why_human[1:])}. Fraud, hardship, complaints and data "
+                "requests always go to a person.")
+    else:
+        foot = f"<b>Draft reply, ready after a quick check</b><div class='k-mail reply' style='margin-top:8px'>{html.escape(r.reply)}</div>"
+    st.markdown(f"<div class='k-detail-p'>{head}<blockquote>“{html.escape(text)}”</blockquote>"
+                f"<div class='en'>In English: {html.escape(r.summary_en)}</div><div class='rule'>{foot}</div>"
+                f"<div class='en' style='margin-top:10px;font-size:12.5px'>AI confidence {r.confidence:.0%}</div></div>",
+                unsafe_allow_html=True)
+
+
+def inbox_view(emails, results):
+    text = {e["id"]: e["text"] for e in emails}
+    rows = sorted(results, key=lambda r: (["high", "medium", "low"].index(r.urgency), not r.needs_human))
+    labels = [f"{r.language.upper()} · {r.summary_en}" for r in rows]
+    left, right = st.columns([3, 2], gap="medium")
+    with right:
+        pick = st.selectbox("Open an email", range(len(rows)), format_func=lambda i: labels[i], key="open_mail")
+        detail_panel(text[rows[pick].id], rows[pick])
+    with left:
+        st.markdown("<div class='k-ib'>" + "".join(
+            f"<div class='k-ib-r{' sel' if i == pick else ''}'><span class='k-lang'>{r.language.upper()}</span>"
+            f"<span class='t'>{html.escape(r.summary_en)}</span><span class='c'>{html.escape(r.topic.replace('_', ' ').capitalize())}</span>"
+            f"<span class='k-st {'p' if r.needs_human else 'd'}'>{'PERSON ONLY' if r.needs_human else 'DRAFT READY'}</span></div>"
+            for i, r in enumerate(rows)) + "</div>", unsafe_allow_html=True)
+
+
 def result_cards(emails, results):
     text = {e["id"]: e["text"] for e in emails}
-    for r in sorted(results, key=lambda r: ["high", "medium", "low"].index(r.urgency)):
-        with st.expander(f"{r.language.upper()} · {r.urgency} urgency · {r.topic.replace('_', ' ')} → {r.team}: {r.summary_en}"):
-            a, b = st.columns(2)
-            a.markdown(f"<p class='k-mail-h'>Customer wrote</p><div class='k-mail'>{html.escape(text[r.id])}</div>",
-                       unsafe_allow_html=True)
-            b.markdown(f"<p class='k-mail-h'>Draft reply, {html.escape(T.LANGS.get(r.language, r.language))}</p>"
-                       f"<div class='k-mail reply'>{html.escape(r.reply)}</div>", unsafe_allow_html=True)
-            chips = "".join(f"<span class='k-chip warn' style='margin-right:6px'>{html.escape(f)}</span>" for f in r.flags)
-            st.markdown((f"<div style='margin-top:10px'>{chips}</div>" if chips else "")
-                        + f"<div class='k-row-sub' style='margin-top:8px'>{'A person reviews before sending: ' if r.needs_human else ''}"
-                        f"{html.escape(r.why_human)}. AI confidence {r.confidence:.0%}.</div>", unsafe_allow_html=True)
+    for r in results:
+        detail_panel(text[r.id], r)
 
 
 def _model_label():
@@ -168,7 +190,7 @@ tab_inbox, tab_own, tab_test = st.tabs(["Inbox", "Try your own email", "Accuracy
 # ---------------------------------------------------------------- inbox
 with tab_inbox:
     st.markdown("**This morning's inbox**")
-    kit.table([{"l": e["lang"], "t": e["text"]} for e in INBOX], [kit.col("", "l", "lang"), kit.col("Email", "t", "wrap")])
+    kit.messages([{"lang": e["lang"], "text": e["text"], "sub": T.LANGS.get(e["lang"], e["lang"])} for e in INBOX])
     if st.button("▶  Sort the inbox", type="primary"):
         st.session_state.inbox_go = True
     if st.session_state.get("inbox_go"):
@@ -186,14 +208,10 @@ with tab_inbox:
             used = saved_label(meta)
         teams = pd.Series([r.team for r in res]).value_counts()
         human = sum(r.needs_human for r in res)
-        urgent = sum(r.urgency == "high" for r in res)
-        kit.answer("Inbox sorted", f"{len(res)} emails sorted into {len(teams)} teams, {urgent} urgent",
-                   f"<b>{human}</b> go to a person before any reply. Fraud, hardship, complaints and data requests "
-                   "always go to a person; simple requests get a draft reply ready to send after a quick check.",
-                   [("To a person", str(human))] + [(team, str(n)) for team, n in teams.items()])
-        result_table(INBOX, res)
-        st.markdown("**Open an email to see the draft reply**")
-        result_cards(INBOX, res)
+        kit.answer("Inbox sorted", f"{len(res)} emails sorted, {human} go to a person first", "",
+                   [("Sorted", f"{len(res)} / {len(INBOX)}"), ("To a person", str(human)), ("Drafts ready", str(len(res) - human)),
+                    ("Languages", str(len({r.language for r in res})))])
+        inbox_view(INBOX, res)
         st.caption(f"Model: {used}")
         if live and API_KEY:
             save_button("inbox", res, used)
