@@ -1,0 +1,135 @@
+Inbox Router
+
+Sorts customer emails in 6 languages and drafts the replies
+Demo · invented data
+For a lender's support team · runs on Google Gemini
+
+Reads each customer email, sorts it by topic and urgency, sends it to the right team and drafts a reply in the customer's language. Fraud, hardship, complaints and data requests always go to a person.
+
+▶ 1-min demo
+
+How it works
+
+expand_more
+
+All emails are invented. AI model: gemini-3.8-flash, then gemini-3.7-flash.
+
+Inbox
+
+Try your own email
+
+Accuracy test (96 emails)
+
+This morning's inbox
+
+LV
+
+Saņēmu atgādinājumu par aizdevumu, kuru es NEKAD neesmu ņēmis. Kāds ir izmantojis manus datus!
+
+Latvian
+LT
+
+Įmoka turi būti sumokėta šiandien, bet negaliu. Ar galima pratęsti terminą?
+
+Lithuanian
+PL
+
+Składam oficjalną reklamację. Naliczyliście mi opłaty, o których nikt mnie nie informował. Sprawę zgłoszę do Rzecznika Finansowego.
+
+Polish
+ES
+
+Solicito acceso a mis datos personales y a la grabación de la llamada del día 3.
+
+Spanish
+RO
+
+Mi-am pierdut locul de muncă și nu mai pot plăti ratele. Ce opțiuni am?
+
+Romanian
+EN
+
+Oh great, another fee. Do you also charge me for paying you back early? Just tell me the total.
+
+English
+LV
+
+Zaudēju darbu un nākamos mēnešus nevarēšu maksāt pilnā apmērā. Ko man darīt? Negribu, lai lieta nonāk pie piedziņas.
+
+Latvian
+RO
+
+Conform GDPR, vă solicit ștergerea tuturor datelor mele personale.
+
+Romanian
+ES
+
+Envié mi solicitud ayer, ¿cuándo recibiré respuesta?
+
+Spanish
+
+▶ Sort the inbox
+
+Inbox sorted
+
+9 emails sorted, 6 go to a person first
+
+Sorted
+9 / 9
+To a person
+6
+Drafts ready
+3
+Languages
+6
+LV
+Customer received a reminder for a loan they never took, claiming identity theft.
+Fraud
+PERSON ONLY
+PL
+Customer submits an official complaint regarding undisclosed fees and threatens to contact the Financial Ombudsman.
+Complaint
+PERSON ONLY
+RO
+Customer lost their job and asks for options as they cannot pay instalments.
+Hardship
+PERSON ONLY
+LV
+Customer lost job and cannot pay full amount, fears debt collection.
+Hardship
+PERSON ONLY
+LT
+Customer asks for an extension for a payment due today.
+Extension
+DRAFT READY
+ES
+Customer requests access to their personal data and a call recording under GDPR.
+Data request
+PERSON ONLY
+RO
+Customer requests deletion of personal data under GDPR.
+Data request
+PERSON ONLY
+EN
+Sarcastic inquiry about early repayment fees and total balance.
+Early repayment
+DRAFT READY
+ES
+Customer inquires about the status of an application submitted yesterday.
+Application status
+DRAFT READY
+
+Open an email
+
+Fraud · high → Fraud Latvian
+“Saņēmu atgādinājumu par aizdevumu, kuru es NEKAD neesmu ņēmis. Kāds ir izmantojis manus datus!”
+In English: Customer received a reminder for a loan they never took, claiming identity theft.
+No AI reply. Fraud is always reviewed by a person. Fraud, hardship, complaints and data requests always go to a person.
+AI confidence 98%
+
+Model: gemini-3.6-flash
+
+Download this run (JSON)
+
+Built by Jānis Saulītis with AI · Google Gemini · triage.py
+See more tools

@@ -1,0 +1,142 @@
+{
+ "date": "2026-11-19",
+ "model": "gemini-3.6-flash",
+ "prompt": "v2",
+ "results": [
+  {
+   "id": "E015",
+   "language": "lv",
+   "topic": "fraud",
+   "urgency": "high",
+   "summary_en": "Customer received a reminder for a loan they never took, claiming identity theft.",
+   "reply": "Labdien! Paldies, ka informējāt mūs par šo situāciju. Lūdzu, neveiciet nekādus maksājumus un neizpaužiet savus datus. Esam nodevuši šo lietu mūsu drošības nodaļai izskatīšanai, un mēs ar jums sazināsimies pēc iespējas ātrāk. Ar cieņu, Klientu atbalsta dienests",
+   "flags": [],
+   "confidence": 0.98,
+   "team": "Fraud",
+   "needs_human": true,
+   "why_human": "fraud is always reviewed by a person",
+   "source": "ai"
+  },
+  {
+   "id": "E020",
+   "language": "lt",
+   "topic": "extension",
+   "urgency": "high",
+   "summary_en": "Customer asks for an extension for a payment due today.",
+   "reply": "Sveiki, dėkojame, kad susisiekėte. Kadangi jūsų įmoka turi būti atlikta šiandien, prašome prisijungti prie savo paskyros ir pateikti prašymą dėl mokėjimo atidėjimo. Jei kyla sunkumų, susisiekite su mumis ir mes pasistengsime jums padėti. Pagarbiai, Klientų aptarnavimo skyrius",
+   "flags": [
+    "payment due today"
+   ],
+   "confidence": 0.95,
+   "team": "Collections",
+   "needs_human": false,
+   "why_human": "simple request: reply can go after a quick check",
+   "source": "ai"
+  },
+  {
+   "id": "E043",
+   "language": "pl",
+   "topic": "complaint",
+   "urgency": "high",
+   "summary_en": "Customer submits an official complaint regarding undisclosed fees and threatens to contact the Financial Ombudsman.",
+   "reply": "Szanowny Kliencie, dziękujemy za kontakt i przepraszamy za powstałe niedogodności. Przyjmujemy Pana/Pani reklamację i przekazujemy sprawę do natychmiastowego wyjaśnienia. Otrzyma Pan/Pani odpowiedź tak szybko, jak to możliwe. Z poważaniem, Dział Obsługi Klienta",
+   "flags": [
+    "regulator threat"
+   ],
+   "confidence": 0.99,
+   "team": "Complaints",
+   "needs_human": true,
+   "why_human": "complaint is always reviewed by a person",
+   "source": "ai"
+  },
+  {
+   "id": "E062",
+   "language": "es",
+   "topic": "data_request",
+   "urgency": "medium",
+   "summary_en": "Customer requests access to their personal data and a call recording under GDPR.",
+   "reply": "Hola. Hemos recibido su solicitud de acceso a sus datos personales y a la grabación de la llamada. Procesaremos su petición de acuerdo con la normativa vigente y le responderemos lo antes posible. Atentamente, Atención al Cliente",
+   "flags": [],
+   "confidence": 0.98,
+   "team": "Compliance",
+   "needs_human": true,
+   "why_human": "data request is always reviewed by a person",
+   "source": "ai"
+  },
+  {
+   "id": "E073",
+   "language": "ro",
+   "topic": "hardship",
+   "urgency": "high",
+   "summary_en": "Customer lost their job and asks for options as they cannot pay instalments.",
+   "reply": "Bună ziua. Ne pare rău să auzim despre situația dumneavoastră dificilă. Un specialist din echipa noastră vă va contacta în cel mai scurt timp pentru a discuta opțiunile disponibile. Cu stima, Serviciul Clienți",
+   "flags": [
+    "vulnerable customer"
+   ],
+   "confidence": 0.98,
+   "team": "Collections",
+   "needs_human": true,
+   "why_human": "hardship is always reviewed by a person; vulnerable customer",
+   "source": "ai"
+  },
+  {
+   "id": "E086",
+   "language": "en",
+   "topic": "early_repayment",
+   "urgency": "low",
+   "summary_en": "Sarcastic inquiry about early repayment fees and total balance.",
+   "reply": "Dear customer, thank you for reaching out. There are no extra fees for paying off your loan early, and you can see your total outstanding amount in your online account. Please log in to check the exact amount [amount] or let us know if you need assistance. Sincerely, Customer Support",
+   "flags": [],
+   "confidence": 0.95,
+   "team": "Customer care",
+   "needs_human": false,
+   "why_human": "simple request: reply can go after a quick check",
+   "source": "ai"
+  },
+  {
+   "id": "E009",
+   "language": "lv",
+   "topic": "hardship",
+   "urgency": "high",
+   "summary_en": "Customer lost job and cannot pay full amount, fears debt collection.",
+   "reply": "Labdien! Mums ir žēl dzirdēt par jūsu situāciju. Lūdzu, neuztraucieties, mūsu speciālists drīzumā ar jums sazināsies, lai pārrunātu iespējamos risinājumus. Ar cieņu, Klientu atbalsta dienests",
+   "flags": [
+    "vulnerable customer",
+    "distress"
+   ],
+   "confidence": 0.98,
+   "team": "Collections",
+   "needs_human": true,
+   "why_human": "hardship is always reviewed by a person; vulnerable customer",
+   "source": "ai"
+  },
+  {
+   "id": "E077",
+   "language": "ro",
+   "topic": "data_request",
+   "urgency": "medium",
+   "summary_en": "Customer requests deletion of personal data under GDPR.",
+   "reply": "Bună ziua. Am primit solicitarea dumneavoastră privind ștergerea datelor cu caracter personal conform GDPR. Cererea dumneavoastră este în curs de procesare și vă vom confirma finalizarea acesteia în cel mai scurt timp. Cu stimă, Serviciul Clienți",
+   "flags": [],
+   "confidence": 0.99,
+   "team": "Compliance",
+   "needs_human": true,
+   "why_human": "data request is always reviewed by a person",
+   "source": "ai"
+  },
+  {
+   "id": "E055",
+   "language": "es",
+   "topic": "application_status",
+   "urgency": "low",
+   "summary_en": "Customer inquires about the status of an application submitted yesterday.",
+   "reply": "Hola. Gracias por ponerse en contacto con nosotros. Estamos revisando su solicitud enviada ayer y le enviaremos una respuesta lo antes posible. Atentamente, Atención al Cliente",
+   "flags": [],
+   "confidence": 0.98,
+   "team": "Underwriting",
+   "needs_human": false,
+   "why_human": "simple request: reply can go after a quick check",
+   "source": "ai"
+  }
+ ]
+}
